@@ -72,8 +72,8 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px;borde
         <div class="pass-title" id="p_id"></div>
         <div style="margin:8px 0"><span id="p_status" class="badge"></span></div>
         <div class="row">
-          <input id="custName" placeholder="اسم العميل"/>
-          <input id="custPhone" placeholder="رقم الجوال" inputmode="tel"/>
+          <input id="customerName" placeholder="اسم العميل" required />
+<input id="customerPhone" placeholder="رقم الجوال" inputmode="tel" required />
         </div>
         <div class="row" style="margin-top:10px">
           <button id="payBtn" onclick="activatePass()">تسجيل الدفع 96 ريال</button>
@@ -167,10 +167,42 @@ async function saveCustomer(){
   msg.innerHTML='<span class="ok">تم حفظ بيانات العميل.</span>'; await loadPass(current.id);
 }
 async function activatePass(){
-  if(!current)return;
-  if(!custPhone.value){alert("أدخلي رقم جوال العميل أولاً");return}
-  await sb.from("tsk96_passes").update({paid:true,customer_name:custName.value,phone:custPhone.value,updated_at:new Date().toISOString()}).eq("id",current.id);
-  msg.innerHTML='<span class="ok">تم تفعيل البطاقة وتسجيل الدفع.</span>'; await loadPass(current.id); await refreshDashboard();
+  if(!current) return;
+
+  const name = (custName.value || '').trim();
+  const phone = (custPhone.value || '').replace(/\D/g,'');
+
+  if(!name){
+    alert("يرجى إدخال اسم العميل أولاً");
+    custName.focus();
+    return;
+  }
+
+  if(!/^05\d{8}$/.test(phone)){
+    alert("يرجى إدخال رقم جوال سعودي صحيح مثل 05XXXXXXXX");
+    custPhone.focus();
+    return;
+  }
+
+  const {error} = await sb
+    .from("tsk96_passes")
+    .update({
+      customer_name: name,
+      phone: phone,
+      paid: true
+    })
+    .eq("id", current.id);
+
+  if(error){
+    alert("تعذر حفظ بيانات العميل: " + error.message);
+    return;
+  }
+
+  msg.innerHTML = '<span class="ok">تم حفظ بيانات العميل وتفعيل البطاقة وتسجيل الدفع ✓</span>';
+
+  await loadPass(current.id);
+  await refreshDashboard();
+}
 }
 async function useVisit(){
   if(!current)return;
