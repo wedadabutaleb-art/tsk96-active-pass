@@ -45,11 +45,26 @@ function normalizePass(raw){
 
 async function loadCustomerPass(raw){
   const input = $('passInput'), result = $('result'), errBox = $('err');
-  const id = normalizePass(raw || input.value);
-  input.value = id;
+  const value = (raw || input.value || '').trim();
+const digits = value.replace(/\D/g,'');
+
+let phoneSearch = '';
+let id = '';
+
+if(/^05\d{8}$/.test(digits)){
+  phoneSearch = digits;
+}else if(/^9665\d{8}$/.test(digits)){
+  phoneSearch = '0' + digits.slice(3);
+}else if(/^009665\d{8}$/.test(digits)){
+  phoneSearch = '0' + digits.slice(5);
+}else{
+  id = normalizePass(value);
+}
+
+input.value = phoneSearch || id;
   result.classList.add('hidden');
   errBox.textContent = '';
-  if(!id) return;
+  if(!id && !phoneSearch) return;
   if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY){
     errBox.textContent = 'تعذر الاتصال بالنظام.'; return;
   }
@@ -57,7 +72,14 @@ async function loadCustomerPass(raw){
   errBox.textContent = 'جاري تحميل البطاقة…';
   try {
     const base = cfg.SUPABASE_URL.replace(/\/$/, '');
-    const url = base + '/rest/v1/tsk96_passes?id=eq.' + encodeURIComponent(id) + '&select=id,paid,cup_received,visit_count,active';
+    const filter = phoneSearch
+  ? 'phone=eq.' + encodeURIComponent(phoneSearch)
+  : 'id=eq.' + encodeURIComponent(id);
+
+const url = base +
+  '/rest/v1/tsk96_passes?select=id,active,visit_count,cup_received&' +
+  filter +
+  '&limit=1';
     const r = await fetch(url, {
       method:'GET',
       headers:{'apikey':cfg.SUPABASE_ANON_KEY,'Authorization':'Bearer '+cfg.SUPABASE_ANON_KEY,'Accept':'application/json'}
