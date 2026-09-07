@@ -42,22 +42,59 @@ function init(){
 }
 async function login(){
   if(!sb)return;
+
   const btn=document.getElementById('loginBtn');
   const m=document.getElementById('msg');
-  btn.disabled=true;m.textContent='جاري تسجيل الدخول…';m.className='msg';
+
+  btn.disabled=true;
+  m.textContent='جاري تسجيل الدخول…';
+  m.className='msg';
+
   const rawPhone=phone.value.trim();
-  let digits=rawPhone.replace(/\D/g,'');
-  if(/^05\d{8}$/.test(digits)) digits='00966'+digits.slice(1);
-  else if(/^9665\d{8}$/.test(digits)) digits='00'+digits;
-  else if(!/^00\d{10,15}$/.test(digits)){
-    btn.disabled=false;m.textContent='أدخل رقم الجوال الصحيح';m.className='msg danger';return
+  let loginEmail='';
+
+  if(rawPhone.toLowerCase()==='admin'){
+    loginEmail='admin@tsk96.local';
+  }else{
+    let digits=rawPhone.replace(/\D/g,'');
+
+    if(/^05\d{8}$/.test(digits)){
+      digits='00966'+digits.slice(1);
+    }else if(/^9665\d{8}$/.test(digits)){
+      digits='00'+digits;
+    }else if(!/^00\d{10,15}$/.test(digits)){
+      btn.disabled=false;
+      m.textContent='أدخل رقم الجوال الصحيح أو admin';
+      m.className='msg danger';
+      return;
+    }
+
+    loginEmail=digits+'@staff.tsk96.local';
   }
-  const staffEmail=digits+'@staff.tsk96.local';
-  const {error}=await sb.auth.signInWithPassword({email:staffEmail,password:password.value});
+
+  const {data,error}=await sb.auth.signInWithPassword({
+    email:loginEmail,
+    password:password.value
+  });
+
   btn.disabled=false;
-  if(error){m.textContent='بيانات الدخول غير صحيحة أو الحساب غير مفعّل';m.className='msg danger';return}
-  m.textContent='تم الدخول';m.className='msg ok';
-  location.replace('./index.html');
+
+  if(error){
+    m.textContent='بيانات الدخول غير صحيحة أو الحساب غير مفعّل';
+    m.className='msg danger';
+    return;
+  }
+
+  m.textContent='تم الدخول';
+  m.className='msg ok';
+
+  const role=data.user?.user_metadata?.role;
+
+  if(role==='admin'){
+    location.replace('./admin.html');
+  }else{
+    location.replace('./index.html');
+  }
 }
 window.addEventListener('load',init);
 </script>
