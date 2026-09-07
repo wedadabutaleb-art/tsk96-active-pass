@@ -86,7 +86,7 @@ async function loadCustomerPass(raw){
 
 $('passInput').addEventListener('keydown', e => { if(e.key==='Enter') loadCustomerPass(); });
 window.addEventListener('load', () => {
-  const q = new URLSearchParams(location.search).get(''id'');
+  const q = new URLSearchParams(location.search).get('id');
   if(q){ $('passInput').value=q; loadCustomerPass(q); }
 });
 </script>
