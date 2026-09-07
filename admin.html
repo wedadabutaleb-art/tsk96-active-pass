@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إدارة العملاء | TSK 96</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7f5;
+  color:#172019;
+}
+.wrap{
+  max-width:1100px;
+  margin:auto;
+  padding:18px;
+}
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+.logo{
+  width:95px;
+  height:95px;
+  object-fit:contain;
+  border-radius:20px;
+}
+h1{
+  margin:10px 0 3px;
+  color:#0e5b3c;
+}
+.sub{color:#69736c}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:18px 0;
+}
+.card{
+  background:white;
+  padding:16px;
+  border-radius:18px;
+  text-align:center;
+  box-shadow:0 3px 15px #0000000d;
+}
+.num{
+  font-size:28px;
+  font-weight:bold;
+  color:#0e5b3c;
+}
+.label{
+  font-size:13px;
+  color:#777;
+  margin-top:5px;
+}
+.tools{
+  background:#fff;
+  padding:14px;
+  border-radius:18px;
+  margin-bottom:14px;
+}
+input{
+  width:100%;
+  padding:14px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  font-size:16px;
+}
+.tablebox{
+  background:#fff;
+  border-radius:18px;
+  overflow:auto;
+  box-shadow:0 3px 15px #0000000d;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:760px;
+}
+th,td{
+  padding:13px 10px;
+  border-bottom:1px solid #eee;
+  text-align:right;
+  font-size:14px;
+}
+th{
+  background:#0e5b3c;
+  color:white;
+}
+.badge{
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+  display:inline-block;
+}
+.yes{background:#dff4e8;color:#096a3e}
+.no{background:#f4e3e3;color:#9b2929}
+
+button{
+  border:0;
+  background:#0e5b3c;
+  color:white;
+  padding:12px 16px;
+  border-radius:12px;
+  cursor:pointer;
+}
+.actions{
+  display:flex;
+  gap:8px;
+  margin:12px 0;
+}
+.status{
+  text-align:center;
+  padding:20px;
+  color:#777;
+}
+@media(max-width:650px){
+  .cards{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<div class="header">
+  <img src="./IMG_6646.jpeg" class="logo" alt="TSK">
+  <h1>إدارة عملاء TSK 96</h1>
+  <div class="sub">TSK 96 ACTIVE PASS — Admin Dashboard</div>
+</div>
+
+<div class="cards">
+  <div class="card">
+    <div class="num" id="customers">0</div>
+    <div class="label">العملاء</div>
+  </div>
+
+  <div class="card">
+    <div class="num" id="paid">0</div>
+    <div class="label">البطاقات المباعة</div>
+  </div>
+
+  <div class="card">
+    <div class="num" id="visits">0</div>
+    <div class="label">إجمالي الزيارات</div>
+  </div>
+</div>
+
+<div class="tools">
+  <input id="search" placeholder="ابحث باسم العميل أو رقم الجوال أو رقم البطاقة">
+</div>
+
+<div class="actions">
+  <button onclick="loadData()">تحديث البيانات</button>
+  <button onclick="exportCSV()">تصدير CSV</button>
+</div>
+
+<div class="tablebox">
+<table>
+<thead>
+<tr>
+  <th>رقم البطاقة</th>
+  <th>اسم العميل</th>
+  <th>الجوال</th>
+  <th>الدفع</th>
+  <th>الكوب</th>
+  <th>الزيارات</th>
+  <th>تاريخ التسجيل</th>
+</tr>
+</thead>
+
+<tbody id="rows"></tbody>
+</table>
+
+<div id="status" class="status">جاري التحقق...</div>
+</div>
+
+</div>
+
+<script>
+const cfg = window.TSK96_CONFIG;
+
+const sb = supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_ANON_KEY
+);
+
+let data = [];
+
+async function checkAdmin(){
+  const {data:{session}} = await sb.auth.getSession();
+
+  if(!session){
+    location.href="./login.html";
+    return false;
+  }
+
+  const role = session.user.user_metadata?.role;
+
+  if(role !== "admin"){
+    document.body.innerHTML =
+      '<div style="padding:50px;text-align:center;font-family:Arial">' +
+      '<h2>غير مصرح بالدخول</h2>' +
+      '<p>هذه الصفحة مخصصة للإدارة فقط.</p>' +
+      '</div>';
+    return false;
+  }
+
+  return true;
+}
+
+async function loadData(){
+
+  const allowed = await checkAdmin();
+  if(!allowed) return;
+
+  document.getElementById("status").style.display="block";
+  document.getElementById("status").textContent="جاري تحميل بيانات العملاء...";
+
+  const {data:rows,error} = await sb
+    .from("tsk96_customer_private")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    document.getElementById("status").textContent =
+      "تعذر تحميل البيانات: " + error.message;
+    return;
+  }
+
+  data = rows || [];
+
+  document.getElementById("customers").textContent =
+    data.filter(x=>x.customer_name || x.phone).length;
+
+  document.getElementById("paid").textContent =
+    data.filter(x=>x.paid).length;
+
+  document.getElementById("visits").textContent =
+    data.reduce((n,x)=>n+(Number(x.visit_count)||0),0);
+
+  render(data);
+}
+
+function render(list){
+
+  const tbody=document.getElementById("rows");
+  tbody.innerHTML="";
+
+  list.forEach(x=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+      <td>${safe(x.id)}</td>
+      <td>${safe(x.customer_name)}</td>
+      <td>${safe(x.phone)}</td>
+
+      <td>
+        <span class="badge ${x.paid?'yes':'no'}">
+          ${x.paid?'مدفوع':'غير مدفوع'}
+        </span>
+      </td>
+
+      <td>
+        <span class="badge ${x.cup_received?'yes':'no'}">
+          ${x.cup_received?'تم الاستلام':'لم يستلم'}
+        </span>
+      </td>
+
+      <td>${Number(x.visit_count)||0} / 3</td>
+
+      <td>
+        ${x.created_at
+          ? new Date(x.created_at).toLocaleDateString("ar-SA")
+          : "-"}
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("status").style.display =
+    list.length ? "none":"block";
+
+  if(!list.length)
+    document.getElementById("status").textContent="لا توجد بيانات.";
+}
+
+function safe(v){
+  if(v===null || v===undefined || v==="") return "-";
+
+  return String(v)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;");
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+  const q=this.value.trim().toLowerCase();
+
+  const result=data.filter(x=>
+    String(x.id||"").toLowerCase().includes(q) ||
+    String(x.customer_name||"").toLowerCase().includes(q) ||
+    String(x.phone||"").toLowerCase().includes(q)
+  );
+
+  render(result);
+});
+
+function exportCSV(){
+
+  if(!data.length){
+    alert("لا توجد بيانات للتصدير");
+    return;
+  }
+
+  const header=[
+    "Pass ID",
+    "Customer Name",
+    "Phone",
+    "Paid",
+    "Cup Received",
+    "Visits",
+    "Created At"
+  ];
+
+  const csv=[
+    header,
+    ...data.map(x=>[
+      x.id,
+      x.customer_name,
+      x.phone,
+      x.paid,
+      x.cup_received,
+      x.visit_count,
+      x.created_at
+    ])
+  ]
+  .map(row=>row.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(","))
+  .join("\n");
+
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="TSK96_Customers.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+loadData();
+</script>
+
+</body>
+</html>
