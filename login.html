@@ -3,100 +3,660 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+
 <title>دخول الموظفين | TSK 96</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
+
 <style>
-:root{--g:#0e5b3c;--bg:#f6f7f4;--ink:#131713;--muted:#748078;--card:#fff;--danger:#b42318}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-.wrap{max-width:480px;margin:auto;padding:28px 18px}.hero{text-align:center;padding:18px}.logo{width:120px;height:120px;object-fit:contain;background:#fff;border-radius:24px;padding:8px;box-shadow:0 5px 20px #0000000c}
-h1{color:var(--g);margin:14px 0 4px}.sub{color:var(--muted)}
-.card{background:#fff;border-radius:24px;padding:20px;box-shadow:0 5px 20px #0000000c;margin-top:18px}
-input,button{width:100%;padding:14px;border-radius:14px;font-size:16px;margin-top:10px}
-input{border:1px solid #d7ddd8}button{border:0;background:var(--g);color:#fff;font-weight:800}
-.msg{text-align:center;margin-top:12px;font-weight:700}.danger{color:var(--danger)}.ok{color:var(--g)}.small{text-align:center;color:var(--muted);font-size:12px;line-height:1.6;margin-top:12px}
+:root{
+  --g:#0e5b3c;
+  --bg:#f6f7f4;
+  --ink:#131713;
+  --muted:#748078;
+  --card:#fff;
+  --danger:#b42318;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+
+.wrap{
+  max-width:480px;
+  margin:auto;
+  padding:20px 18px 28px;
+}
+
+.lang-area{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:5px;
+}
+
+.lang-switch{
+  display:flex;
+  gap:6px;
+  background:#fff;
+  padding:5px;
+  border-radius:14px;
+  box-shadow:0 4px 14px #0000000a;
+}
+
+.lang-switch button{
+  width:auto;
+  margin:0;
+  padding:8px 12px;
+  border-radius:10px;
+  background:#eef2ef;
+  color:#536058;
+  font-size:13px;
+}
+
+.lang-switch button.active{
+  background:var(--g);
+  color:#fff;
+}
+
+.hero{
+  text-align:center;
+  padding:18px;
+}
+
+.logo{
+  width:120px;
+  height:120px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:24px;
+  padding:8px;
+  box-shadow:0 5px 20px #0000000c;
+}
+
+h1{
+  color:var(--g);
+  margin:14px 0 4px;
+}
+
+.sub{
+  color:var(--muted);
+}
+
+.card{
+  background:#fff;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 5px 20px #0000000c;
+  margin-top:18px;
+}
+
+input,
+button{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  font-size:16px;
+  margin-top:10px;
+}
+
+input{
+  border:1px solid #d7ddd8;
+  background:#fff;
+  color:var(--ink);
+}
+
+button{
+  border:0;
+  background:var(--g);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+button:disabled{
+  background:#d7ddd9;
+  color:#8a938d;
+  cursor:not-allowed;
+}
+
+.msg{
+  text-align:center;
+  margin-top:12px;
+  font-weight:700;
+}
+
+.danger{
+  color:var(--danger);
+}
+
+.ok{
+  color:var(--g);
+}
+
+.small{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin-top:12px;
+}
+
+html[dir="ltr"] .lang-area{
+  justify-content:flex-start;
+}
 </style>
 </head>
+
 <body>
+
 <div class="wrap">
+
+  <div class="lang-area">
+    <div class="lang-switch">
+
+      <button
+        id="arBtn"
+        type="button"
+        onclick="setLanguage('ar')">
+        العربية
+      </button>
+
+      <button
+        id="enBtn"
+        type="button"
+        onclick="setLanguage('en')">
+        English
+      </button>
+
+    </div>
+  </div>
+
+
   <div class="hero">
-    <img class="logo" src="./IMG_6646.jpeg" alt="TSK Active">
-    <h1>دخول موظفي TSK</h1>
-    <div class="sub">96 ACTIVE PASS</div>
+
+    <img
+      class="logo"
+      src="./IMG_6646.jpeg"
+      alt="TSK Active">
+
+    <h1 id="loginTitle">
+      دخول موظفي TSK
+    </h1>
+
+    <div class="sub">
+      96 ACTIVE PASS
+    </div>
+
   </div>
+
+
   <div class="card">
-    <input id="phone" type="tel" inputmode="tel" autocomplete="username" placeholder="رقم جوال الموظف" dir="ltr">
-    <input id="password" type="password" autocomplete="current-password" placeholder="كلمة المرور">
-    <button id="loginBtn" onclick="login()">دخول النظام</button>
-    <div id="msg" class="msg"></div>
-    <div class="small">هذه الصفحة للموظفين فقط. حسابات الموظفين تُنشأ من لوحة Supabase ولا يوجد تسجيل ذاتي.</div>
+
+    <input
+      id="phone"
+      type="text"
+      inputmode="tel"
+      autocomplete="username"
+      placeholder="رقم جوال الموظف"
+      dir="ltr">
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="كلمة المرور">
+
+    <button
+      id="loginBtn"
+      onclick="login()">
+      دخول النظام
+    </button>
+
+    <div
+      id="msg"
+      class="msg">
+    </div>
+
+    <div
+      class="small"
+      id="loginHelp">
+      هذه الصفحة للموظفين فقط. حسابات الموظفين تُنشأ من لوحة Supabase ولا يوجد تسجيل ذاتي.
+    </div>
+
   </div>
+
 </div>
+
+
 <script>
-const cfg=window.TSK96_CONFIG||{};
-let sb=null;
-function init(){
-  if(!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY){msg.textContent='إعداد الاتصال غير مكتمل';msg.className='msg danger';return}
-  sb=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);
-  sb.auth.getSession().then(({data})=>{ if(data?.session) location.replace('./index.html'); });
-}
-async function login(){
-  if(!sb)return;
 
-  const btn=document.getElementById('loginBtn');
-  const m=document.getElementById('msg');
+const cfg =
+  window.TSK96_CONFIG || {};
 
-  btn.disabled=true;
-  m.textContent='جاري تسجيل الدخول…';
-  m.className='msg';
+let sb = null;
 
-  const rawPhone=phone.value.trim();
-  let loginEmail='';
+let currentLang =
+  localStorage.getItem("tsk96_lang") || "ar";
 
-  if(rawPhone.toLowerCase()==='admin'){
-    loginEmail='admin@tsk96.local';
-  }else{
-    let digits=rawPhone.replace(/\D/g,'');
 
-    if(/^05\d{8}$/.test(digits)){
-      digits='00966'+digits.slice(1);
-    }else if(/^9665\d{8}$/.test(digits)){
-      digits='00'+digits;
-    }else if(!/^00\d{10,15}$/.test(digits)){
-      btn.disabled=false;
-      m.textContent='أدخل رقم الجوال الصحيح أو admin';
-      m.className='msg danger';
-      return;
-    }
+const texts = {
 
-    loginEmail=digits+'@staff.tsk96.local';
+  ar:{
+    title:"دخول موظفي TSK",
+    phone:"رقم جوال الموظف",
+    password:"كلمة المرور",
+    login:"دخول النظام",
+
+    help:
+      "هذه الصفحة للموظفين فقط. حسابات الموظفين تُنشأ من لوحة Supabase ولا يوجد تسجيل ذاتي.",
+
+    configError:
+      "إعداد الاتصال غير مكتمل",
+
+    logging:
+      "جاري تسجيل الدخول…",
+
+    invalidPhone:
+      "أدخل رقم الجوال الصحيح أو admin",
+
+    invalidLogin:
+      "بيانات الدخول غير صحيحة أو الحساب غير مفعّل",
+
+    success:
+      "تم الدخول"
+  },
+
+
+  en:{
+    title:"TSK Staff Login",
+    phone:"Employee Mobile Number",
+    password:"Password",
+    login:"Login",
+
+    help:
+      "This page is for staff only. Staff accounts are created by the administrator and self-registration is not available.",
+
+    configError:
+      "Connection configuration is incomplete.",
+
+    logging:
+      "Signing in…",
+
+    invalidPhone:
+      "Enter a valid mobile number or admin.",
+
+    invalidLogin:
+      "Incorrect login details or the account is not active.",
+
+    success:
+      "Login successful"
   }
 
-  const {data,error}=await sb.auth.signInWithPassword({
-    email:loginEmail,
-    password:password.value
-  });
+};
 
-  btn.disabled=false;
 
-  if(error){
-    m.textContent='بيانات الدخول غير صحيحة أو الحساب غير مفعّل';
-    m.className='msg danger';
+function tr(key){
+  return texts[currentLang][key] || key;
+}
+
+
+function setLanguage(lang){
+
+  currentLang =
+    lang === "en"
+      ? "en"
+      : "ar";
+
+  localStorage.setItem(
+    "tsk96_lang",
+    currentLang
+  );
+
+  applyLanguage();
+}
+
+
+function applyLanguage(){
+
+  const en =
+    currentLang === "en";
+
+
+  document.documentElement.lang =
+    en ? "en" : "ar";
+
+  document.documentElement.dir =
+    en ? "ltr" : "rtl";
+
+
+  document.title =
+    en
+      ? "Staff Login | TSK 96"
+      : "دخول الموظفين | TSK 96";
+
+
+  document.getElementById("loginTitle").textContent =
+    tr("title");
+
+
+  document.getElementById("phone").placeholder =
+    tr("phone");
+
+
+  document.getElementById("password").placeholder =
+    tr("password");
+
+
+  document.getElementById("loginBtn").textContent =
+    tr("login");
+
+
+  document.getElementById("loginHelp").textContent =
+    tr("help");
+
+
+  document.getElementById("arBtn")
+    .classList.toggle(
+      "active",
+      !en
+    );
+
+
+  document.getElementById("enBtn")
+    .classList.toggle(
+      "active",
+      en
+    );
+}
+
+
+/* تشغيل Supabase */
+
+function init(){
+
+  applyLanguage();
+
+
+  const m =
+    document.getElementById("msg");
+
+
+  if(
+    !cfg.SUPABASE_URL ||
+    !cfg.SUPABASE_ANON_KEY
+  ){
+
+    m.textContent =
+      tr("configError");
+
+    m.className =
+      "msg danger";
+
     return;
   }
 
-  m.textContent='تم الدخول';
-  m.className='msg ok';
 
-  const role=data.user?.user_metadata?.role;
+  sb =
+    supabase.createClient(
+      cfg.SUPABASE_URL,
+      cfg.SUPABASE_ANON_KEY
+    );
 
-  if(role==='admin'){
-    location.replace('./admin.html');
+
+  /*
+    إذا كانت هناك جلسة سابقة،
+    يستمر النظام في سلوكه الحالي
+    ويدخل المستخدم مباشرة.
+  */
+
+  sb.auth.getSession()
+    .then(({data})=>{
+
+      if(data?.session){
+
+        const role =
+          data.session.user
+          ?.user_metadata
+          ?.role;
+
+
+        if(role === "admin"){
+
+          location.replace(
+            "./admin.html"
+          );
+
+        }else{
+
+          location.replace(
+            "./index.html"
+          );
+        }
+      }
+
+    });
+}
+
+
+/* تسجيل الدخول */
+
+async function login(){
+
+  if(!sb) return;
+
+
+  const btn =
+    document.getElementById(
+      "loginBtn"
+    );
+
+
+  const m =
+    document.getElementById(
+      "msg"
+    );
+
+
+  const phoneInput =
+    document.getElementById(
+      "phone"
+    );
+
+
+  const passwordInput =
+    document.getElementById(
+      "password"
+    );
+
+
+  btn.disabled =
+    true;
+
+
+  m.textContent =
+    tr("logging");
+
+
+  m.className =
+    "msg";
+
+
+  const rawPhone =
+    phoneInput.value
+    .trim();
+
+
+  let loginEmail =
+    "";
+
+
+  /* دخول الإدارة */
+
+  if(
+    rawPhone.toLowerCase()
+    === "admin"
+  ){
+
+    loginEmail =
+      "admin@tsk96.local";
+
   }else{
-    location.replace('./index.html');
+
+    let digits =
+      rawPhone.replace(
+        /\D/g,
+        ""
+      );
+
+
+    /*
+      مثال:
+      05XXXXXXXX
+      يتحول تقنياً إلى:
+      009665XXXXXXXX
+    */
+
+    if(
+      /^05\d{8}$/.test(digits)
+    ){
+
+      digits =
+        "00966" +
+        digits.slice(1);
+
+    }
+
+    else if(
+      /^9665\d{8}$/.test(digits)
+    ){
+
+      digits =
+        "00" + digits;
+
+    }
+
+    else if(
+      !/^00\d{10,15}$/.test(digits)
+    ){
+
+      btn.disabled =
+        false;
+
+
+      m.textContent =
+        tr("invalidPhone");
+
+
+      m.className =
+        "msg danger";
+
+
+      return;
+    }
+
+
+    loginEmail =
+      digits +
+      "@staff.tsk96.local";
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await sb.auth
+    .signInWithPassword({
+
+      email:
+        loginEmail,
+
+      password:
+        passwordInput.value
+
+    });
+
+
+  btn.disabled =
+    false;
+
+
+  if(error){
+
+    m.textContent =
+      tr("invalidLogin");
+
+
+    m.className =
+      "msg danger";
+
+
+    return;
+  }
+
+
+  m.textContent =
+    tr("success");
+
+
+  m.className =
+    "msg ok";
+
+
+  const role =
+    data.user
+    ?.user_metadata
+    ?.role;
+
+
+  if(
+    role === "admin"
+  ){
+
+    location.replace(
+      "./admin.html"
+    );
+
+  }else{
+
+    location.replace(
+      "./index.html"
+    );
   }
 }
-window.addEventListener('load',init);
+
+
+/* Enter لتسجيل الدخول */
+
+document.addEventListener(
+  "keydown",
+  function(e){
+
+    if(
+      e.key === "Enter"
+    ){
+
+      login();
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  "load",
+  init
+);
+
 </script>
+
 </body>
 </html>
