@@ -203,7 +203,7 @@ async function activatePass(){
   await loadPass(current.id);
   await refreshDashboard();
 }
-}
+
 async function useVisit(){
   if(!current)return;
   if(!current.paid){alert("يجب تسجيل دفع 96 ريال أولاً");return;}
