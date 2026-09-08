@@ -152,8 +152,8 @@ async function loadPass(id){
 payBtn.disabled = !!p.paid || !p.customer_name || !p.phone;
   saveCustomerBtn.disabled = !!p.paid || (!!p.customer_name && !!p.phone);
   payBtn.textContent=p.paid?"تم تسجيل الدفع ✓":"تسجيل الدفع 96 ريال";
-  visitBtn.disabled=!p.paid || !p.active || p.visit_count>=3;
-  cupBtn.disabled=!p.paid || !p.active || !!p.cup_received;
+  visitBtn.disabled = !p.paid;
+  cupBtn.disabled = !p.paid;
   const {data:v}=await sb.from("tsk96_visits").select("*").eq("pass_id",id).order("visit_no");
   const by={};(v||[]).forEach(x=>by[x.visit_no]=x);
   visitList.innerHTML=[1,2,3].map(n=>by[n]?
