@@ -40,6 +40,7 @@ header{
   display:flex;
   align-items:center;
   gap:12px;
+  flex-wrap:wrap;
 }
 
 .brand img{
@@ -51,7 +52,10 @@ header{
   padding:5px;
 }
 
-.brandText{flex:1}
+.brandText{
+  flex:1;
+  min-width:170px;
+}
 
 header h1{
   margin:0;
@@ -61,6 +65,46 @@ header h1{
 .sub{
   opacity:.85;
   margin-top:4px;
+  font-size:13px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.lang-switch{
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+
+.lang-switch button{
+  width:auto;
+  padding:8px 9px;
+  border-radius:10px;
+  background:#ffffff1f;
+  border:1px solid #ffffff55;
+  color:#fff;
+  font-size:12px;
+  white-space:nowrap;
+}
+
+.lang-switch button.active{
+  background:#fff;
+  color:#0e5b3c;
+}
+
+.logout{
+  width:auto!important;
+  padding:9px 11px!important;
+  background:#ffffff1f!important;
+  border:1px solid #ffffff55!important;
+  color:#fff!important;
+  border-radius:12px!important;
+  font-size:12px!important;
+  white-space:nowrap;
 }
 
 .wrap{
@@ -105,7 +149,6 @@ button{
   background:#fff;
 }
 
-/* الزر المفعّل = أخضر */
 button{
   border:none;
   background:var(--g);
@@ -116,14 +159,12 @@ button{
   appearance:none;
 }
 
-/* جميع أزرار العمليات المفعلة = أخضر */
 button.secondary,
 button.warn{
   background:var(--g);
   color:#fff;
 }
 
-/* الزر غير المفعّل = رمادي */
 button:disabled,
 button.secondary:disabled,
 button.warn:disabled{
@@ -160,6 +201,7 @@ button.warn:disabled{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:10px;
   padding:10px 0;
   border-bottom:1px solid #eef1ef;
 }
@@ -218,17 +260,31 @@ table{
 th,td{
   padding:8px;
   border-bottom:1px solid #eee;
-  text-align:right;
+  text-align:start;
 }
 
-.logout{
-  width:auto;
-  padding:9px 12px;
-  background:#ffffff1f!important;
-  border:1px solid #ffffff55!important;
-  color:#fff!important;
-  border-radius:12px;
-  font-size:13px;
+@media(max-width:600px){
+  .brand img{
+    width:60px;
+    height:60px;
+  }
+
+  header h1{
+    font-size:20px;
+  }
+
+  .header-actions{
+    width:100%;
+    justify-content:space-between;
+  }
+
+  .lang-switch{
+    flex:1;
+  }
+
+  .lang-switch button{
+    flex:1;
+  }
 }
 
 @media(min-width:720px){
@@ -254,17 +310,41 @@ th,td{
 
     <div class="brandText">
       <h1>TSK 96 ACTIVE PASS</h1>
-      <div class="sub">
+      <div class="sub" id="subTitle">
         نظام موحد للفروع • الصفوة • المجمعة • المزاحمية
       </div>
     </div>
 
-    <button class="logout" onclick="logoutStaff()">
-      تسجيل الخروج
-    </button>
+    <div class="header-actions">
+
+      <div class="lang-switch">
+        <button
+          id="arBtn"
+          type="button"
+          onclick="setLanguage('ar')">
+          العربية
+        </button>
+
+        <button
+          id="enBtn"
+          type="button"
+          onclick="setLanguage('en')">
+          English
+        </button>
+      </div>
+
+      <button
+        class="logout"
+        id="logoutBtn"
+        onclick="logoutStaff()">
+        تسجيل الخروج
+      </button>
+
+    </div>
 
   </div>
 </header>
+
 
 <div class="wrap">
 
@@ -272,22 +352,22 @@ th,td{
 
     <div class="card">
       <div id="sold" class="stat">—</div>
-      <div class="label">بطاقات مباعة</div>
+      <div class="label" id="soldLabel">بطاقات مباعة</div>
     </div>
 
     <div class="card">
       <div id="cups" class="stat">—</div>
-      <div class="label">أكواب تم تسليمها</div>
+      <div class="label" id="cupsLabel">أكواب تم تسليمها</div>
     </div>
 
     <div class="card">
       <div id="visits" class="stat">—</div>
-      <div class="label">إجمالي الزيارات</div>
+      <div class="label" id="visitsLabel">إجمالي الزيارات</div>
     </div>
 
     <div class="card">
       <div id="remaining" class="stat">—</div>
-      <div class="label">بطاقات متاحة</div>
+      <div class="label" id="remainingLabel">بطاقات متاحة</div>
     </div>
 
   </div>
@@ -299,14 +379,14 @@ th,td{
 
       <div class="card">
 
-        <b>بيانات الموظف</b>
+        <b id="staffTitle">بيانات الموظف</b>
 
         <div class="row" style="margin-top:10px">
 
           <select id="branch">
-            <option>الصفوة</option>
-            <option>المجمعة</option>
-            <option>المزاحمية</option>
+            <option value="الصفوة">الصفوة</option>
+            <option value="المجمعة">المجمعة</option>
+            <option value="المزاحمية">المزاحمية</option>
           </select>
 
           <input
@@ -322,7 +402,7 @@ th,td{
 
       <div class="card">
 
-        <b>مسح QR</b>
+        <b id="qrTitle">مسح QR</b>
 
         <div id="reader" style="margin-top:10px"></div>
 
@@ -333,7 +413,10 @@ th,td{
           تشغيل الكاميرا
         </button>
 
-        <div class="small" style="margin-top:8px">
+        <div
+          class="small"
+          id="qrHelp"
+          style="margin-top:8px">
           يمكن أيضاً إدخال رقم البطاقة يدوياً.
         </div>
 
@@ -342,7 +425,7 @@ th,td{
 
       <div class="card">
 
-        <b>بحث عن بطاقة</b>
+        <b id="searchTitle">بحث عن بطاقة</b>
 
         <div class="row" style="margin-top:10px">
 
@@ -352,7 +435,9 @@ th,td{
             dir="ltr"
           />
 
-          <button onclick="loadPass()">
+          <button
+            id="showPassBtn"
+            onclick="loadPass()">
             عرض البطاقة
           </button>
 
@@ -444,7 +529,7 @@ th,td{
 
   <div class="card">
 
-    <b>آخر العمليات</b>
+    <b id="recentTitle">آخر العمليات</b>
 
     <div style="overflow:auto;margin-top:8px">
 
@@ -452,11 +537,11 @@ th,td{
 
         <thead>
           <tr>
-            <th>البطاقة</th>
-            <th>الزيارة</th>
-            <th>الفرع</th>
-            <th>الموظف</th>
-            <th>الوقت</th>
+            <th id="thPass">البطاقة</th>
+            <th id="thVisit">الزيارة</th>
+            <th id="thBranch">الفرع</th>
+            <th id="thEmployee">الموظف</th>
+            <th id="thTime">الوقت</th>
           </tr>
         </thead>
 
@@ -475,6 +560,9 @@ th,td{
 
 const cfg = window.TSK96_CONFIG || {};
 
+let currentLang =
+  localStorage.getItem("tsk96_lang") || "ar";
+
 let sb = null;
 let scanner = null;
 let scanning = false;
@@ -482,7 +570,9 @@ let current = null;
 let staffName = "";
 
 
-/* العناصر */
+/* =========================
+   العناصر
+========================= */
 
 const passId = document.getElementById("passId");
 const passCard = document.getElementById("passCard");
@@ -513,8 +603,360 @@ const remaining = document.getElementById("remaining");
 const scanBtn = document.getElementById("scanBtn");
 
 
+/* =========================
+   اللغة
+========================= */
+
+const text = {
+
+  ar:{
+    sub:
+      "نظام موحد للفروع • الصفوة • المجمعة • المزاحمية",
+
+    logout:"تسجيل الخروج",
+
+    sold:"بطاقات مباعة",
+    cups:"أكواب تم تسليمها",
+    visits:"إجمالي الزيارات",
+    remaining:"بطاقات متاحة",
+
+    staff:"بيانات الموظف",
+    employeePlaceholder:"اسم الموظف",
+
+    qr:"مسح QR",
+    startCamera:"تشغيل الكاميرا",
+    stopCamera:"إيقاف الكاميرا",
+    qrHelp:"يمكن أيضاً إدخال رقم البطاقة يدوياً.",
+
+    search:"بحث عن بطاقة",
+    showPass:"عرض البطاقة",
+
+    customerName:"اسم العميل",
+    customerPhone:"رقم الجوال",
+
+    pay:"تسجيل الدفع 96 ريال",
+    paid:"تم تسجيل الدفع ✓",
+    saveCustomer:"حفظ بيانات العميل",
+
+    useVisit:"تسجيل الزيارة الحالية",
+    giveCup:"تسجيل تسليم الكوب",
+
+    recent:"آخر العمليات",
+
+    thPass:"البطاقة",
+    thVisit:"الزيارة",
+    thBranch:"الفرع",
+    thEmployee:"الموظف",
+    thTime:"الوقت",
+
+    available:"متاحة ولم تُبع",
+    active:"مفعّلة",
+    visitWord:"زيارات",
+
+    visit:"الزيارة",
+    remainingVisit:"متبقية",
+
+    cup:"الكوب",
+    cupReceived:"تم الاستلام في",
+    cupNotReceived:"لم يُسلّم",
+
+    passNotFound:"البطاقة غير موجودة",
+
+    customerRequired:"يرجى إدخال اسم العميل أولاً",
+    phoneInvalid:
+      "يرجى إدخال رقم جوال سعودي صحيح مثل 05XXXXXXXX",
+
+    customerSaved:
+      "تم حفظ بيانات العميل ✓ يمكنك الآن تسجيل الدفع.",
+
+    alreadyActive:"البطاقة مفعّلة بالفعل.",
+
+    paymentSuccess:
+      "تم تسجيل دفع 96 ريال وتفعيل البطاقة ✓",
+
+    paymentFirst:"يجب تسجيل دفع 96 ريال أولاً",
+
+    staffError:"تعذر تحديد حساب الموظف",
+
+    visitsFinished:"تم استخدام الزيارات الثلاث.",
+
+    visitRegistered:"تم تسجيل الزيارة",
+    remainingCount:"المتبقي",
+
+    cupAlready:"تم تسجيل تسليم الكوب مسبقاً",
+    cupSuccess:"تم تسجيل تسليم الكوب ✓",
+
+    configError:
+      "أضيفي بيانات Supabase في ملف config.js أولاً.",
+
+    staffNameError:
+      "اسم الموظف غير مُعرّف في الحساب. تواصلي مع الإدارة.",
+
+    saveError:"تعذر حفظ بيانات العميل",
+    paymentError:"تعذر تسجيل الدفع",
+
+    cameraError:"تعذر تشغيل الكاميرا"
+  },
+
+
+  en:{
+    sub:
+      "Unified Branch System • Al Safwa • Al Majmaah • Al Muzahimiyah",
+
+    logout:"Logout",
+
+    sold:"Passes Sold",
+    cups:"Cups Delivered",
+    visits:"Total Visits",
+    remaining:"Available Passes",
+
+    staff:"Staff Information",
+    employeePlaceholder:"Employee Name",
+
+    qr:"Scan QR",
+    startCamera:"Start Camera",
+    stopCamera:"Stop Camera",
+    qrHelp:"You can also enter the pass number manually.",
+
+    search:"Search Pass",
+    showPass:"View Pass",
+
+    customerName:"Customer Name",
+    customerPhone:"Mobile Number",
+
+    pay:"Register Payment — SAR 96",
+    paid:"Payment Registered ✓",
+    saveCustomer:"Save Customer Information",
+
+    useVisit:"Register Current Visit",
+    giveCup:"Register Cup Delivery",
+
+    recent:"Recent Transactions",
+
+    thPass:"Pass",
+    thVisit:"Visit",
+    thBranch:"Branch",
+    thEmployee:"Employee",
+    thTime:"Time",
+
+    available:"Available — Not Sold",
+    active:"Active",
+    visitWord:"Visits",
+
+    visit:"Visit",
+    remainingVisit:"Remaining",
+
+    cup:"Cup",
+    cupReceived:"Received at",
+    cupNotReceived:"Not Delivered",
+
+    passNotFound:"Pass not found",
+
+    customerRequired:"Please enter the customer name first.",
+    phoneInvalid:
+      "Please enter a valid Saudi mobile number such as 05XXXXXXXX.",
+
+    customerSaved:
+      "Customer information saved ✓ You can now register the payment.",
+
+    alreadyActive:"This pass is already active.",
+
+    paymentSuccess:
+      "SAR 96 payment registered and pass activated ✓",
+
+    paymentFirst:"Please register the SAR 96 payment first.",
+
+    staffError:"Unable to identify the employee account.",
+
+    visitsFinished:"All three visits have been used.",
+
+    visitRegistered:"Visit registered",
+    remainingCount:"Remaining",
+
+    cupAlready:"Cup delivery has already been registered.",
+    cupSuccess:"Cup delivery registered ✓",
+
+    configError:
+      "Please add the Supabase configuration to config.js first.",
+
+    staffNameError:
+      "The employee name is not defined in this account. Please contact administration.",
+
+    saveError:"Unable to save customer information",
+    paymentError:"Unable to register payment",
+
+    cameraError:"Unable to start the camera"
+  }
+
+};
+
+
+function tr(key){
+  return text[currentLang][key] || key;
+}
+
+
+function branchLabel(value){
+
+  if(currentLang === "ar"){
+    return value;
+  }
+
+  const names = {
+    "الصفوة":"Al Safwa",
+    "المجمعة":"Al Majmaah",
+    "المزاحمية":"Al Muzahimiyah"
+  };
+
+  return names[value] || value;
+}
+
+
+function updateBranchLabels(){
+
+  [...branch.options].forEach(option => {
+    option.textContent =
+      branchLabel(option.value);
+  });
+}
+
+
+function setLanguage(lang){
+
+  currentLang =
+    lang === "en" ? "en" : "ar";
+
+  localStorage.setItem(
+    "tsk96_lang",
+    currentLang
+  );
+
+  applyLanguage();
+}
+
+
+function applyLanguage(){
+
+  const en =
+    currentLang === "en";
+
+  document.documentElement.lang =
+    en ? "en" : "ar";
+
+  document.documentElement.dir =
+    en ? "ltr" : "rtl";
+
+
+  document.getElementById("subTitle").textContent =
+    tr("sub");
+
+  document.getElementById("logoutBtn").textContent =
+    tr("logout");
+
+
+  document.getElementById("soldLabel").textContent =
+    tr("sold");
+
+  document.getElementById("cupsLabel").textContent =
+    tr("cups");
+
+  document.getElementById("visitsLabel").textContent =
+    tr("visits");
+
+  document.getElementById("remainingLabel").textContent =
+    tr("remaining");
+
+
+  document.getElementById("staffTitle").textContent =
+    tr("staff");
+
+  employee.placeholder =
+    tr("employeePlaceholder");
+
+
+  document.getElementById("qrTitle").textContent =
+    tr("qr");
+
+  scanBtn.textContent =
+    scanning
+      ? tr("stopCamera")
+      : tr("startCamera");
+
+  document.getElementById("qrHelp").textContent =
+    tr("qrHelp");
+
+
+  document.getElementById("searchTitle").textContent =
+    tr("search");
+
+  document.getElementById("showPassBtn").textContent =
+    tr("showPass");
+
+
+  custName.placeholder =
+    tr("customerName");
+
+  custPhone.placeholder =
+    tr("customerPhone");
+
+
+  saveCustomerBtn.textContent =
+    tr("saveCustomer");
+
+  visitBtn.textContent =
+    tr("useVisit");
+
+  cupBtn.textContent =
+    tr("giveCup");
+
+
+  document.getElementById("recentTitle").textContent =
+    tr("recent");
+
+  document.getElementById("thPass").textContent =
+    tr("thPass");
+
+  document.getElementById("thVisit").textContent =
+    tr("thVisit");
+
+  document.getElementById("thBranch").textContent =
+    tr("thBranch");
+
+  document.getElementById("thEmployee").textContent =
+    tr("thEmployee");
+
+  document.getElementById("thTime").textContent =
+    tr("thTime");
+
+
+  document.getElementById("arBtn")
+    .classList.toggle("active", !en);
+
+  document.getElementById("enBtn")
+    .classList.toggle("active", en);
+
+
+  updateBranchLabels();
+
+
+  if(current){
+    renderCurrentPass();
+  }
+
+  if(sb){
+    refreshDashboard();
+  }
+}
+
+
+/* =========================
+   التحقق
+========================= */
+
 function validPhone(phone){
-  return /^05\d{8}$/.test((phone || "").replace(/\D/g,""));
+  return /^05\d{8}$/.test(
+    (phone || "").replace(/\D/g,"")
+  );
 }
 
 
@@ -534,7 +976,7 @@ function checkConfig(){
     cfg.SUPABASE_URL.includes("PASTE_")
   ){
 
-    alert("أضيفي بيانات Supabase في ملف config.js أولاً.");
+    alert(tr("configError"));
 
     return false;
   }
@@ -548,11 +990,16 @@ function checkConfig(){
 }
 
 
-/* تسجيل الدخول */
+/* =========================
+   تسجيل الدخول
+========================= */
 
 async function init(){
 
+  applyLanguage();
+
   if(!checkConfig()) return;
+
 
   const {
     data:{session}
@@ -568,12 +1015,13 @@ async function init(){
 
 
   staffName =
-    (session.user?.user_metadata?.name || "").trim();
+    (session.user?.user_metadata?.name || "")
+    .trim();
 
 
   if(!staffName){
 
-    alert("اسم الموظف غير مُعرّف في الحساب. تواصلي مع الإدارة.");
+    alert(tr("staffNameError"));
 
     await sb.auth.signOut();
 
@@ -583,7 +1031,8 @@ async function init(){
   }
 
 
-  employee.value = staffName;
+  employee.value =
+    staffName;
 
 
   const b =
@@ -593,6 +1042,9 @@ async function init(){
   if(b){
     branch.value = b;
   }
+
+
+  updateBranchLabels();
 
 
   branch.onchange = () => {
@@ -609,7 +1061,9 @@ async function init(){
 }
 
 
-/* تسجيل الخروج */
+/* =========================
+   تسجيل الخروج
+========================= */
 
 async function logoutStaff(){
 
@@ -621,9 +1075,14 @@ async function logoutStaff(){
 }
 
 
-/* تحديث الإحصائيات */
+/* =========================
+   لوحة الإحصائيات
+========================= */
 
 async function refreshDashboard(){
+
+  if(!sb) return;
+
 
   const {data:ps} =
     await sb
@@ -641,7 +1100,8 @@ async function refreshDashboard(){
 
     visits.textContent =
       ps.reduce(
-        (a,x) => a + (x.visit_count || 0),
+        (a,x) =>
+          a + (x.visit_count || 0),
         0
       );
 
@@ -654,8 +1114,17 @@ async function refreshDashboard(){
     await sb
     .from("tsk96_visits")
     .select("*")
-    .order("created_at",{ascending:false})
+    .order(
+      "created_at",
+      {ascending:false}
+    )
     .limit(12);
+
+
+  const locale =
+    currentLang === "en"
+      ? "en-US"
+      : "ar-SA";
 
 
   recent.innerHTML =
@@ -668,12 +1137,13 @@ async function refreshDashboard(){
 
         <td>${x.visit_no}</td>
 
-        <td>${x.branch}</td>
+        <td>${branchLabel(x.branch)}</td>
 
         <td>${x.employee || ""}</td>
 
         <td>
-          ${new Date(x.created_at).toLocaleString("ar-SA")}
+          ${new Date(x.created_at)
+            .toLocaleString(locale)}
         </td>
 
       </tr>
@@ -683,7 +1153,180 @@ async function refreshDashboard(){
 }
 
 
-/* تحميل البطاقة */
+/* =========================
+   عرض البطاقة
+========================= */
+
+function renderCurrentPass(){
+
+  if(!current) return;
+
+
+  const p =
+    current;
+
+
+  const hasCustomer =
+    customerIsValid(p);
+
+
+  p_id.textContent =
+    p.id;
+
+
+  custName.value =
+    p.customer_name || "";
+
+  custPhone.value =
+    p.phone || "";
+
+
+  p_status.textContent =
+    p.paid
+      ? `${tr("active")} • ${p.visit_count || 0}/3 ${tr("visitWord")}`
+      : tr("available");
+
+
+  saveCustomerBtn.disabled =
+    !!p.paid ||
+    hasCustomer;
+
+
+  payBtn.disabled =
+    !!p.paid ||
+    !hasCustomer;
+
+
+  payBtn.textContent =
+    p.paid
+      ? tr("paid")
+      : tr("pay");
+
+
+  visitBtn.disabled =
+    !p.paid ||
+    !p.active ||
+    !hasCustomer ||
+    (p.visit_count || 0) >= 3;
+
+
+  cupBtn.disabled =
+    !p.paid ||
+    !p.active ||
+    !hasCustomer ||
+    !!p.cup_received;
+}
+
+
+async function renderVisits(){
+
+  if(!current || !sb) return;
+
+
+  const {data:v} =
+    await sb
+    .from("tsk96_visits")
+    .select("*")
+    .eq(
+      "pass_id",
+      current.id
+    )
+    .order("visit_no");
+
+
+  const by = {};
+
+
+  (v || []).forEach(x => {
+
+    by[x.visit_no] = x;
+
+  });
+
+
+  const locale =
+    currentLang === "en"
+      ? "en-US"
+      : "ar-SA";
+
+
+  visitList.innerHTML =
+
+    [1,2,3]
+
+    .map(n =>
+
+      by[n]
+
+      ?
+
+      `<div class="visit">
+
+        <b>
+          ${tr("visit")} ${n}
+        </b>
+
+        <span class="ok">
+
+          ✓ ${branchLabel(by[n].branch)}
+
+          —
+
+          ${new Date(by[n].created_at)
+            .toLocaleString(locale)}
+
+        </span>
+
+      </div>`
+
+      :
+
+      `<div class="visit">
+
+        <b>
+          ${tr("visit")} ${n}
+        </b>
+
+        <span class="no">
+          ${tr("remainingVisit")}
+        </span>
+
+      </div>`
+
+    )
+
+    .join("")
+
+    +
+
+    `<div class="visit">
+
+      <b>
+        ${tr("cup")}
+      </b>
+
+      <span class="${current.cup_received ? "ok" : "no"}">
+
+        ${
+          current.cup_received
+
+          ? "✓ " +
+            tr("cupReceived") +
+            " " +
+            branchLabel(current.cup_branch || "")
+
+          : tr("cupNotReceived")
+        }
+
+      </span>
+
+    </div>`;
+}
+
+
+/* =========================
+   تحميل البطاقة
+========================= */
 
 async function loadPass(id){
 
@@ -709,148 +1352,37 @@ async function loadPass(id){
 
   if(error || !p){
 
-    alert("البطاقة غير موجودة");
+    alert(tr("passNotFound"));
 
     return;
   }
 
 
-  current = p;
-
-  passId.value = id;
-
-  passCard.classList.remove("hidden");
+  current =
+    p;
 
 
-  p_id.textContent = id;
-
-  custName.value =
-    p.customer_name || "";
-
-  custPhone.value =
-    p.phone || "";
+  passId.value =
+    id;
 
 
-  const hasCustomer =
-    customerIsValid(p);
+  passCard.classList.remove(
+    "hidden"
+  );
 
 
-  p_status.textContent =
-    p.paid
-      ? `مفعّلة • ${p.visit_count || 0}/3 زيارات`
-      : "متاحة ولم تُبع";
+  renderCurrentPass();
 
-
-  /* 1 — بيانات العميل */
-
-  saveCustomerBtn.disabled =
-    !!p.paid || hasCustomer;
-
-
-  /* 2 — الدفع */
-
-  payBtn.disabled =
-    !!p.paid || !hasCustomer;
-
-
-  payBtn.textContent =
-    p.paid
-      ? "تم تسجيل الدفع ✓"
-      : "تسجيل الدفع 96 ريال";
-
-
-  /* 3 — الزيارة */
-
-  visitBtn.disabled =
-    !p.paid ||
-    !p.active ||
-    (p.visit_count || 0) >= 3;
-
-
-  /* 4 — الكوب */
-
-  cupBtn.disabled =
-    !p.paid ||
-    !p.active ||
-    !!p.cup_received;
-
-
-  const {data:v} =
-    await sb
-    .from("tsk96_visits")
-    .select("*")
-    .eq("pass_id",id)
-    .order("visit_no");
-
-
-  const by = {};
-
-
-  (v || []).forEach(x => {
-
-    by[x.visit_no] = x;
-
-  });
-
-
-  visitList.innerHTML =
-
-    [1,2,3]
-
-    .map(n =>
-
-      by[n]
-
-      ?
-
-      `<div class="visit">
-        <b>الزيارة ${n}</b>
-        <span class="ok">
-          ✓ ${by[n].branch}
-          —
-          ${new Date(by[n].created_at).toLocaleString("ar-SA")}
-        </span>
-      </div>`
-
-      :
-
-      `<div class="visit">
-        <b>الزيارة ${n}</b>
-        <span class="no">
-          متبقية
-        </span>
-      </div>`
-
-    )
-
-    .join("")
-
-    +
-
-    `<div class="visit">
-
-      <b>الكوب</b>
-
-      <span class="${p.cup_received ? "ok" : "no"}">
-
-        ${
-          p.cup_received
-
-          ? "✓ تم الاستلام في " + (p.cup_branch || "")
-
-          : "لم يُسلّم"
-        }
-
-      </span>
-
-    </div>`;
+  await renderVisits();
 
 
   msg.innerHTML = "";
 }
 
 
-/* حفظ بيانات العميل */
+/* =========================
+   حفظ بيانات العميل
+========================= */
 
 async function saveCustomer(){
 
@@ -859,14 +1391,15 @@ async function saveCustomer(){
 
   if(current.paid){
 
-    alert("البطاقة مفعّلة بالفعل.");
+    alert(tr("alreadyActive"));
 
     return;
   }
 
 
   const name =
-    (custName.value || "").trim();
+    (custName.value || "")
+    .trim();
 
 
   const phone =
@@ -876,7 +1409,7 @@ async function saveCustomer(){
 
   if(!name){
 
-    alert("يرجى إدخال اسم العميل أولاً");
+    alert(tr("customerRequired"));
 
     custName.focus();
 
@@ -886,7 +1419,7 @@ async function saveCustomer(){
 
   if(!validPhone(phone)){
 
-    alert("يرجى إدخال رقم جوال سعودي صحيح مثل 05XXXXXXXX");
+    alert(tr("phoneInvalid"));
 
     custPhone.focus();
 
@@ -903,16 +1436,21 @@ async function saveCustomer(){
 
       phone:phone,
 
-      updated_at:new Date().toISOString()
+      updated_at:
+        new Date().toISOString()
 
     })
-    .eq("id",current.id);
+    .eq(
+      "id",
+      current.id
+    );
 
 
   if(error){
 
     alert(
-      "تعذر حفظ بيانات العميل: " +
+      tr("saveError") +
+      ": " +
       error.message
     );
 
@@ -920,36 +1458,38 @@ async function saveCustomer(){
   }
 
 
-  /* تحديث النسخة المحلية */
+  current.customer_name =
+    name;
 
-  current.customer_name = name;
-
-  current.phone = phone;
-
-
-  /* إغلاق الحفظ */
-
-  saveCustomerBtn.disabled = true;
+  current.phone =
+    phone;
 
 
-  /* فتح الدفع */
+  saveCustomerBtn.disabled =
+    true;
 
-  payBtn.disabled = false;
+
+  payBtn.disabled =
+    false;
 
 
-  /* الزيارة والكوب يبقيان مقفلين */
+  visitBtn.disabled =
+    true;
 
-  visitBtn.disabled = true;
-
-  cupBtn.disabled = true;
+  cupBtn.disabled =
+    true;
 
 
   msg.innerHTML =
-    '<span class="ok">تم حفظ بيانات العميل ✓ يمكنك الآن تسجيل الدفع.</span>';
+    `<span class="ok">
+      ${tr("customerSaved")}
+    </span>`;
 }
 
 
-/* تسجيل الدفع */
+/* =========================
+   تسجيل الدفع
+========================= */
 
 async function activatePass(){
 
@@ -957,13 +1497,13 @@ async function activatePass(){
 
 
   if(current.paid){
-
     return;
   }
 
 
   const name =
-    (custName.value || "").trim();
+    (custName.value || "")
+    .trim();
 
 
   const phone =
@@ -973,7 +1513,7 @@ async function activatePass(){
 
   if(!name){
 
-    alert("يرجى إدخال اسم العميل أولاً");
+    alert(tr("customerRequired"));
 
     return;
   }
@@ -981,7 +1521,7 @@ async function activatePass(){
 
   if(!validPhone(phone)){
 
-    alert("يرجى إدخال رقم جوال سعودي صحيح مثل 05XXXXXXXX");
+    alert(tr("phoneInvalid"));
 
     return;
   }
@@ -999,13 +1539,17 @@ async function activatePass(){
       paid:true
 
     })
-    .eq("id",current.id);
+    .eq(
+      "id",
+      current.id
+    );
 
 
   if(error){
 
     alert(
-      "تعذر تسجيل الدفع: " +
+      tr("paymentError") +
+      ": " +
       error.message
     );
 
@@ -1014,16 +1558,23 @@ async function activatePass(){
 
 
   msg.innerHTML =
-    '<span class="ok">تم تسجيل دفع 96 ريال وتفعيل البطاقة ✓</span>';
+    `<span class="ok">
+      ${tr("paymentSuccess")}
+    </span>`;
 
 
-  await loadPass(current.id);
+  await loadPass(
+    current.id
+  );
+
 
   await refreshDashboard();
 }
 
 
-/* تسجيل زيارة */
+/* =========================
+   تسجيل زيارة
+========================= */
 
 async function useVisit(){
 
@@ -1032,7 +1583,7 @@ async function useVisit(){
 
   if(!current.paid){
 
-    alert("يجب تسجيل دفع 96 ريال أولاً");
+    alert(tr("paymentFirst"));
 
     return;
   }
@@ -1040,15 +1591,17 @@ async function useVisit(){
 
   if(!staffName){
 
-    alert("تعذر تحديد حساب الموظف");
+    alert(tr("staffError"));
 
     return;
   }
 
 
-  if((current.visit_count || 0) >= 3){
+  if(
+    (current.visit_count || 0) >= 3
+  ){
 
-    alert("تم استخدام الزيارات الثلاث.");
+    alert(tr("visitsFinished"));
 
     return;
   }
@@ -1059,11 +1612,14 @@ async function useVisit(){
       "tsk96_use_visit",
       {
 
-        p_pass_id:current.id,
+        p_pass_id:
+          current.id,
 
-        p_branch:branch.value,
+        p_branch:
+          branch.value,
 
-        p_employee:staffName
+        p_employee:
+          staffName
 
       }
     );
@@ -1080,28 +1636,47 @@ async function useVisit(){
   }
 
 
-  msg.innerHTML =
+  if(data?.ok){
 
-    `<span class="${data.ok ? "ok" : "danger"}">
+    msg.innerHTML =
+      `<span class="ok">
 
-      ${data.message}
+        ${tr("visitRegistered")} ✓
 
-      ${
-        data.ok
-          ? " — المتبقي " + data.remaining
+        ${
+          typeof data.remaining !== "undefined"
+
+          ? " — " +
+            tr("remainingCount") +
+            " " +
+            data.remaining
+
           : ""
-      }
+        }
 
-    </span>`;
+      </span>`;
+
+  }else{
+
+    msg.innerHTML =
+      `<span class="danger">
+        ${data?.message || ""}
+      </span>`;
+  }
 
 
-  await loadPass(current.id);
+  await loadPass(
+    current.id
+  );
+
 
   await refreshDashboard();
 }
 
 
-/* تسليم الكوب */
+/* =========================
+   تسليم الكوب
+========================= */
 
 async function giveCup(){
 
@@ -1110,7 +1685,7 @@ async function giveCup(){
 
   if(!current.paid){
 
-    alert("يجب تسجيل دفع 96 ريال أولاً");
+    alert(tr("paymentFirst"));
 
     return;
   }
@@ -1118,7 +1693,7 @@ async function giveCup(){
 
   if(current.cup_received){
 
-    alert("تم تسجيل تسليم الكوب مسبقاً");
+    alert(tr("cupAlready"));
 
     return;
   }
@@ -1129,9 +1704,11 @@ async function giveCup(){
       "tsk96_give_cup",
       {
 
-        p_pass_id:current.id,
+        p_pass_id:
+          current.id,
 
-        p_branch:branch.value
+        p_branch:
+          branch.value
 
       }
     );
@@ -1148,28 +1725,43 @@ async function giveCup(){
   }
 
 
-  msg.innerHTML =
+  if(data?.ok){
 
-    `<span class="${data.ok ? "ok" : "danger"}">
+    msg.innerHTML =
+      `<span class="ok">
 
-      ${data.message}
+        ${tr("cupSuccess")}
 
-      ${
-        data.branch
-          ? " — " + data.branch
+        ${
+          data.branch
+          ? " — " +
+            branchLabel(data.branch)
           : ""
-      }
+        }
 
-    </span>`;
+      </span>`;
+
+  }else{
+
+    msg.innerHTML =
+      `<span class="danger">
+        ${data?.message || ""}
+      </span>`;
+  }
 
 
-  await loadPass(current.id);
+  await loadPass(
+    current.id
+  );
+
 
   await refreshDashboard();
 }
 
 
-/* قراءة QR */
+/* =========================
+   قراءة QR
+========================= */
 
 function onScan(txt){
 
@@ -1190,7 +1782,9 @@ function onScan(txt){
     }
 
 
-    passId.value = id;
+    passId.value =
+      id;
+
 
     loadPass(id);
   }
@@ -1199,26 +1793,32 @@ function onScan(txt){
   if(scanning){
 
     toggleScanner();
-
   }
 }
 
 
-/* الكاميرا */
+/* =========================
+   الكاميرا
+========================= */
 
 async function toggleScanner(){
 
   if(!scanning){
 
     scanner =
-      new Html5Qrcode("reader");
+      new Html5Qrcode(
+        "reader"
+      );
 
 
     try{
 
       await scanner.start(
 
-        {facingMode:"environment"},
+        {
+          facingMode:
+            "environment"
+        },
 
         {
           fps:10,
@@ -1232,16 +1832,19 @@ async function toggleScanner(){
       );
 
 
-      scanning = true;
+      scanning =
+        true;
+
 
       scanBtn.textContent =
-        "إيقاف الكاميرا";
+        tr("stopCamera");
 
 
     }catch(e){
 
       alert(
-        "تعذر تشغيل الكاميرا: " +
+        tr("cameraError") +
+        ": " +
         e
       );
     }
@@ -1257,13 +1860,17 @@ async function toggleScanner(){
     }catch(e){}
 
 
-    scanning = false;
+    scanning =
+      false;
+
 
     scanBtn.textContent =
-      "تشغيل الكاميرا";
+      tr("startCamera");
   }
 }
 
+
+/* تشغيل النظام */
 
 window.addEventListener(
   "load",
