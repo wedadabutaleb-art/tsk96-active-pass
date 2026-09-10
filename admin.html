@@ -3,25 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>إدارة العملاء | TSK 96</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 
 <style>
+
 :root{
-  --g:#0e5b3c;
-  --g2:#0e6b46;
+  --green:#0e5b3c;
+  --green2:#0f6a46;
   --bg:#f5f7f5;
-  --card:#ffffff;
+  --white:#ffffff;
   --text:#172019;
-  --muted:#777;
+  --muted:#707870;
   --line:#eeeeee;
-  --gold:#f4b400;
+  --gold:#d99a00;
   --red:#9b2929;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -50,7 +54,7 @@ body{
 
 h1{
   margin:10px 0 3px;
-  color:var(--g);
+  color:var(--green);
 }
 
 .sub{
@@ -58,10 +62,10 @@ h1{
 }
 
 .section-title{
-  margin:26px 0 12px;
+  margin:28px 0 12px;
   font-size:21px;
   font-weight:900;
-  color:var(--g);
+  color:var(--green);
 }
 
 .cards{
@@ -82,11 +86,11 @@ h1{
 .num{
   font-size:28px;
   font-weight:bold;
-  color:var(--g);
+  color:var(--green);
 }
 
 .num.gold{
-  color:#d79a00;
+  color:var(--gold);
 }
 
 .label{
@@ -108,6 +112,7 @@ input{
   border:1px solid #ddd;
   border-radius:12px;
   font-size:16px;
+  background:white;
 }
 
 .actions{
@@ -119,17 +124,18 @@ input{
 
 button{
   border:0;
-  background:var(--g);
+  background:var(--green);
   color:white;
   padding:12px 16px;
   border-radius:12px;
   cursor:pointer;
   font-weight:bold;
+  font-size:14px;
 }
 
 button.secondary{
   background:#edf4f0;
-  color:var(--g);
+  color:var(--green);
   border:1px solid #cfe0d6;
 }
 
@@ -143,14 +149,15 @@ button.secondary{
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:820px;
+  min-width:900px;
 }
 
 .feedback-table{
-  min-width:1050px;
+  min-width:1100px;
 }
 
-th,td{
+th,
+td{
   padding:13px 10px;
   border-bottom:1px solid var(--line);
   text-align:right;
@@ -159,7 +166,7 @@ th,td{
 }
 
 th{
-  background:var(--g);
+  background:var(--green);
   color:white;
   white-space:nowrap;
 }
@@ -188,7 +195,7 @@ th{
 }
 
 .stars{
-  color:var(--gold);
+  color:#f4b400;
   letter-spacing:1px;
   white-space:nowrap;
   font-size:16px;
@@ -198,6 +205,21 @@ th{
   min-width:180px;
   max-width:280px;
   line-height:1.6;
+}
+
+.date-box{
+  white-space:nowrap;
+  line-height:1.7;
+}
+
+.date-gregorian{
+  font-weight:bold;
+  color:#172019;
+}
+
+.date-hijri{
+  color:#777;
+  font-size:12px;
 }
 
 .status{
@@ -210,17 +232,16 @@ th{
   color:#b42318;
 }
 
-.feedback-tools{
-  margin-top:14px;
-}
-
 @media(max-width:850px){
+
   .cards{
     grid-template-columns:1fr 1fr;
   }
+
 }
 
 @media(max-width:520px){
+
   .wrap{
     padding:12px;
   }
@@ -236,13 +257,17 @@ th{
   .actions button{
     flex:1;
   }
+
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="wrap">
+
+  <!-- HEADER -->
 
   <div class="header">
 
@@ -262,9 +287,7 @@ th{
   </div>
 
 
-  <!-- =========================
-       ملخص العملاء
-  ========================== -->
+  <!-- CAMPAIGN SUMMARY -->
 
   <div class="section-title">
     ملخص الحملة
@@ -295,9 +318,7 @@ th{
   </div>
 
 
-  <!-- =========================
-       ملخص التقييمات
-  ========================== -->
+  <!-- FEEDBACK SUMMARY -->
 
   <div class="section-title">
     ⭐ تقييمات العملاء
@@ -306,55 +327,68 @@ th{
   <div class="cards">
 
     <div class="card">
+
       <div
         class="num gold"
         id="avgOverall">
         0.0
       </div>
+
       <div class="label">
         متوسط التقييم العام / 5
       </div>
+
     </div>
 
+
     <div class="card">
+
       <div
         class="num"
         id="feedbackCount">
         0
       </div>
+
       <div class="label">
         عدد التقييمات
       </div>
+
     </div>
 
+
     <div class="card">
+
       <div
         class="num gold"
         id="avgProduct">
         0.0
       </div>
+
       <div class="label">
         متوسط جودة المنتج / 5
       </div>
+
     </div>
 
+
     <div class="card">
+
       <div
         class="num gold"
         id="avgService">
         0.0
       </div>
+
       <div class="label">
         متوسط الخدمة / 5
       </div>
+
     </div>
 
   </div>
 
 
-  <!-- =========================
-       العملاء
-  ========================== -->
+  <!-- CUSTOMER DATA -->
 
   <div class="section-title">
     بيانات العملاء
@@ -377,7 +411,7 @@ th{
 
     <button
       class="secondary"
-      onclick="exportCSV()">
+      onclick="exportCustomersCSV()">
       تصدير العملاء CSV
     </button>
 
@@ -389,6 +423,7 @@ th{
     <table>
 
       <thead>
+
         <tr>
           <th>رقم البطاقة</th>
           <th>اسم العميل</th>
@@ -398,11 +433,13 @@ th{
           <th>الزيارات</th>
           <th>تاريخ التسجيل</th>
         </tr>
+
       </thead>
 
       <tbody id="rows"></tbody>
 
     </table>
+
 
     <div
       id="status"
@@ -413,16 +450,13 @@ th{
   </div>
 
 
-  <!-- =========================
-       جدول التقييمات
-  ========================== -->
+  <!-- FEEDBACK DETAILS -->
 
   <div class="section-title">
     تفاصيل تقييمات الزيارات
   </div>
 
-
-  <div class="tools feedback-tools">
+  <div class="tools">
 
     <input
       id="feedbackSearch"
@@ -450,37 +484,21 @@ th{
 
         <tr>
 
-          <th>
-            رقم البطاقة
-          </th>
+          <th>رقم البطاقة</th>
 
-          <th>
-            الزيارة
-          </th>
+          <th>الزيارة</th>
 
-          <th>
-            التقييم العام
-          </th>
+          <th>التقييم العام</th>
 
-          <th>
-            جودة المنتج
-          </th>
+          <th>جودة المنتج</th>
 
-          <th>
-            الخدمة
-          </th>
+          <th>الخدمة</th>
 
-          <th>
-            التوصية
-          </th>
+          <th>التوصية</th>
 
-          <th>
-            التعليق
-          </th>
+          <th>التعليق</th>
 
-          <th>
-            التاريخ
-          </th>
+          <th>التاريخ</th>
 
         </tr>
 
@@ -516,19 +534,21 @@ const sb =
   );
 
 
-let data = [];
+let customerData = [];
 
 let feedbackData = [];
 
 
-/* =========================
-   التحقق من الأدمن
-========================= */
+/* =========================================
+   ADMIN CHECK
+========================================= */
 
 async function checkAdmin(){
 
   const {
-    data:{session}
+    data:{
+      session
+    }
   } =
   await sb.auth.getSession();
 
@@ -539,6 +559,7 @@ async function checkAdmin(){
       "./login.html";
 
     return false;
+
   }
 
 
@@ -551,23 +572,38 @@ async function checkAdmin(){
   if(role !== "admin"){
 
     document.body.innerHTML =
-      '<div style="padding:50px;text-align:center;font-family:Arial">' +
-      '<h2>غير مصرح بالدخول</h2>' +
-      '<p>هذه الصفحة مخصصة للإدارة فقط.</p>' +
-      '</div>';
+      `
+      <div
+        style="
+          padding:50px;
+          text-align:center;
+          font-family:Arial
+        ">
 
+        <h2>
+          غير مصرح بالدخول
+        </h2>
+
+        <p>
+          هذه الصفحة مخصصة للإدارة فقط.
+        </p>
+
+      </div>
+      `;
 
     return false;
+
   }
 
 
   return true;
+
 }
 
 
-/* =========================
-   تحميل البيانات
-========================= */
+/* =========================================
+   LOAD ALL DATA
+========================================= */
 
 async function loadData(){
 
@@ -580,31 +616,39 @@ async function loadData(){
   }
 
 
-  document
-    .getElementById("status")
-    .style.display =
+  const status =
+    document.getElementById("status");
+
+
+  const feedbackStatus =
+    document.getElementById("feedbackStatus");
+
+
+  status.style.display =
     "block";
 
 
-  document
-    .getElementById("status")
-    .textContent =
+  status.className =
+    "status";
+
+
+  status.textContent =
     "جاري تحميل بيانات العملاء...";
 
 
-  document
-    .getElementById("feedbackStatus")
-    .style.display =
+  feedbackStatus.style.display =
     "block";
 
 
-  document
-    .getElementById("feedbackStatus")
-    .textContent =
+  feedbackStatus.className =
+    "status";
+
+
+  feedbackStatus.textContent =
     "جاري تحميل التقييمات...";
 
 
-  /* البطاقات */
+  /* LOAD PASSES */
 
   const {
     data:passes,
@@ -619,24 +663,21 @@ async function loadData(){
 
   if(passError){
 
-    document
-      .getElementById("status")
-      .className =
+    status.className =
       "status error";
 
 
-    document
-      .getElementById("status")
-      .textContent =
+    status.textContent =
       "تعذر تحميل بيانات البطاقات: " +
       passError.message;
 
 
     return;
+
   }
 
 
-  /* بيانات العملاء الخاصة */
+  /* LOAD PRIVATE CUSTOMER DATA */
 
   const {
     data:customers,
@@ -651,139 +692,94 @@ async function loadData(){
 
   if(customerError){
 
-    document
-      .getElementById("status")
-      .className =
+    status.className =
       "status error";
 
 
-    document
-      .getElementById("status")
-      .textContent =
+    status.textContent =
       "تعذر تحميل بيانات العملاء: " +
       customerError.message;
 
 
     return;
+
   }
 
 
   const passMap = {};
 
 
-  (passes || [])
-    .forEach(p => {
+  (passes || []).forEach(
+
+    p => {
 
       passMap[p.id] =
         p;
 
-    });
+    }
+
+  );
 
 
-  data =
-    (customers || [])
-    .map(c => {
+  customerData =
+    (customers || []).map(
 
-      const p =
-        passMap[c.pass_id]
-        || {};
+      c => {
 
-
-      return {
-
-        id:
-          c.pass_id,
-
-        customer_name:
-          c.customer_name
-          || "",
-
-        phone:
-          c.customer_phone
-          || "",
-
-        paid:
-          p.paid
-          || false,
-
-        cup_received:
-          p.cup_received
-          || false,
-
-        cup_branch:
-          p.cup_branch
-          || "",
-
-        visit_count:
-          Number(
-            p.visit_count
-          ) || 0,
-
-        created_at:
-          p.created_at
-          || c.created_at,
-
-        marketing_consent:
-          c.marketing_consent
-          || false
-
-      };
-
-    });
+        const p =
+          passMap[c.pass_id]
+          || {};
 
 
-  document
-    .getElementById("customers")
-    .textContent =
-    data
-      .filter(
-        x =>
-          x.customer_name
-          ||
-          x.phone
-      )
-      .length;
+        return {
 
+          id:
+            c.pass_id,
 
-  document
-    .getElementById("paid")
-    .textContent =
-    data
-      .filter(
-        x => x.paid
-      )
-      .length;
+          customer_name:
+            c.customer_name
+            || "",
 
+          phone:
+            c.customer_phone
+            || "",
 
-  document
-    .getElementById("visits")
-    .textContent =
-    data.reduce(
-      (n,x) =>
-        n +
-        (
-          Number(
-            x.visit_count
-          )
-          || 0
-        ),
-      0
+          paid:
+            Boolean(p.paid),
+
+          cup_received:
+            Boolean(p.cup_received),
+
+          cup_branch:
+            p.cup_branch
+            || "",
+
+          visit_count:
+            Number(
+              p.visit_count
+            ) || 0,
+
+          created_at:
+            p.created_at
+            || c.created_at,
+
+          marketing_consent:
+            Boolean(
+              c.marketing_consent
+            )
+
+        };
+
+      }
+
     );
 
 
-  document
-    .getElementById("cups")
-    .textContent =
-    data
-      .filter(
-        x =>
-          x.cup_received
-      )
-      .length;
+  updateCampaignSummary();
 
 
   renderCustomers(
-    data
+    customerData
   );
 
 
@@ -792,9 +788,70 @@ async function loadData(){
 }
 
 
-/* =========================
-   تحميل التقييمات
-========================= */
+/* =========================================
+   CAMPAIGN SUMMARY
+========================================= */
+
+function updateCampaignSummary(){
+
+  document
+    .getElementById("customers")
+    .textContent =
+    customerData.filter(
+
+      x =>
+        x.customer_name
+        ||
+        x.phone
+
+    ).length;
+
+
+  document
+    .getElementById("paid")
+    .textContent =
+    customerData.filter(
+
+      x => x.paid
+
+    ).length;
+
+
+  document
+    .getElementById("visits")
+    .textContent =
+    customerData.reduce(
+
+      (total,x) =>
+        total +
+        (
+          Number(
+            x.visit_count
+          )
+          || 0
+        ),
+
+      0
+
+    );
+
+
+  document
+    .getElementById("cups")
+    .textContent =
+    customerData.filter(
+
+      x =>
+        x.cup_received
+
+    ).length;
+
+}
+
+
+/* =========================================
+   LOAD FEEDBACK
+========================================= */
 
 async function loadFeedback(){
 
@@ -805,7 +862,19 @@ async function loadFeedback(){
   await sb
     .from("tsk96_feedback")
     .select(
-      "id,pass_id,visit_no,overall_rating,product_rating,service_rating,experience_rating,recommend,comment,created_at"
+      `
+      id,
+      pass_id,
+      visit_no,
+      branch,
+      overall_rating,
+      product_rating,
+      service_rating,
+      experience_rating,
+      recommend,
+      comment,
+      created_at
+      `
     )
     .order(
       "created_at",
@@ -815,22 +884,26 @@ async function loadFeedback(){
     );
 
 
+  const feedbackStatus =
+    document
+      .getElementById(
+        "feedbackStatus"
+      );
+
+
   if(error){
 
-    document
-      .getElementById("feedbackStatus")
-      .className =
+    feedbackStatus.className =
       "status error";
 
 
-    document
-      .getElementById("feedbackStatus")
-      .textContent =
+    feedbackStatus.textContent =
       "تعذر تحميل التقييمات: " +
       error.message;
 
 
     return;
+
   }
 
 
@@ -849,9 +922,9 @@ async function loadFeedback(){
 }
 
 
-/* =========================
-   ملخص التقييمات
-========================= */
+/* =========================================
+   FEEDBACK SUMMARY
+========================================= */
 
 function average(
   list,
@@ -860,32 +933,37 @@ function average(
 
   const values =
     list
-    .map(
-      x =>
-        Number(
-          x[field]
-        )
-    )
-    .filter(
-      x =>
-        Number.isFinite(x)
-        &&
-        x > 0
-    );
+      .map(
+        x =>
+          Number(
+            x[field]
+          )
+      )
+      .filter(
+        x =>
+          Number.isFinite(x)
+          &&
+          x > 0
+      );
 
 
   if(
     !values.length
   ){
+
     return "0.0";
+
   }
 
 
   const total =
     values.reduce(
+
       (a,b) =>
         a + b,
+
       0
+
     );
 
 
@@ -893,19 +971,24 @@ function average(
     total /
     values.length
   ).toFixed(1);
+
 }
 
 
 function updateFeedbackSummary(){
 
   document
-    .getElementById("feedbackCount")
+    .getElementById(
+      "feedbackCount"
+    )
     .textContent =
     feedbackData.length;
 
 
   document
-    .getElementById("avgOverall")
+    .getElementById(
+      "avgOverall"
+    )
     .textContent =
     average(
       feedbackData,
@@ -914,7 +997,9 @@ function updateFeedbackSummary(){
 
 
   document
-    .getElementById("avgProduct")
+    .getElementById(
+      "avgProduct"
+    )
     .textContent =
     average(
       feedbackData,
@@ -923,7 +1008,9 @@ function updateFeedbackSummary(){
 
 
   document
-    .getElementById("avgService")
+    .getElementById(
+      "avgService"
+    )
     .textContent =
     average(
       feedbackData,
@@ -933,102 +1020,138 @@ function updateFeedbackSummary(){
 }
 
 
-/* =========================
-   عرض العملاء
-========================= */
+/* =========================================
+   RENDER CUSTOMERS
+========================================= */
 
 function renderCustomers(list){
 
   const tbody =
     document
-      .getElementById("rows");
+      .getElementById(
+        "rows"
+      );
 
 
   tbody.innerHTML =
     "";
 
 
-  list.forEach(x => {
+  list.forEach(
 
-    const tr =
-      document
-        .createElement("tr");
+    x => {
+
+      const tr =
+        document
+          .createElement(
+            "tr"
+          );
 
 
-    tr.innerHTML =
-      `
-      <td>
-        ${safe(x.id)}
-      </td>
+      tr.innerHTML =
+        `
 
-      <td>
-        ${safe(x.customer_name)}
-      </td>
+        <td>
+          ${safe(x.id)}
+        </td>
 
-      <td>
-        ${safe(x.phone)}
-      </td>
 
-      <td>
+        <td>
+          ${safe(x.customer_name)}
+        </td>
 
-        <span
-          class="badge ${x.paid ? "yes" : "no"}">
 
-          ${x.paid ? "مدفوع" : "غير مدفوع"}
+        <td>
+          ${safe(x.phone)}
+        </td>
 
-        </span>
 
-      </td>
+        <td>
 
-      <td>
+          <span
+            class="
+              badge
+              ${
+                x.paid
+                ? "yes"
+                : "no"
+              }
+            ">
 
-        <span
-          class="badge ${x.cup_received ? "yes" : "no"}">
+            ${
+              x.paid
+              ? "مدفوع"
+              : "غير مدفوع"
+            }
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="
+              badge
+              ${
+                x.cup_received
+                ? "yes"
+                : "no"
+              }
+            ">
+
+            ${
+              x.cup_received
+              ? "تم الاستلام"
+              : "لم يستلم"
+            }
+
+          </span>
+
+        </td>
+
+
+        <td>
 
           ${
-            x.cup_received
-            ? "تم الاستلام"
-            : "لم يستلم"
+            Number(
+              x.visit_count
+            ) || 0
+          } / 3
+
+        </td>
+
+
+        <td>
+
+          ${
+            x.created_at
+            ? formatDualDate(
+                x.created_at
+              )
+            : "-"
           }
 
-        </span>
+        </td>
 
-      </td>
-
-      <td>
-        ${Number(x.visit_count) || 0} / 3
-      </td>
-
-      <td>
-
-        ${
-          x.created_at
-
-          ? new Date(
-              x.created_at
-            )
-            .toLocaleDateString(
-              "ar-SA"
-            )
-
-          : "-"
-        }
-
-      </td>
-      `;
+        `;
 
 
-    tbody
-      .appendChild(
+      tbody.appendChild(
         tr
       );
 
-  });
+    }
+
+  );
 
 
   const status =
     document
-      .getElementById("status");
+      .getElementById(
+        "status"
+      );
 
 
   status.className =
@@ -1051,9 +1174,9 @@ function renderCustomers(list){
 }
 
 
-/* =========================
-   عرض التقييمات
-========================= */
+/* =========================================
+   RENDER FEEDBACK
+========================================= */
 
 function renderFeedback(list){
 
@@ -1068,96 +1191,108 @@ function renderFeedback(list){
     "";
 
 
-  list.forEach(x => {
+  list.forEach(
 
-    const tr =
-      document
-        .createElement("tr");
+    x => {
 
-
-    tr.innerHTML =
-      `
-
-      <td>
-        ${safe(x.pass_id)}
-      </td>
+      const tr =
+        document
+          .createElement(
+            "tr"
+          );
 
 
-      <td>
-        ${
-          x.visit_no
-          ? "الزيارة " +
-            Number(
-              x.visit_no
-            )
-          : "-"
-        }
-      </td>
+      tr.innerHTML =
+        `
+
+        <td>
+          ${safe(x.pass_id)}
+        </td>
 
 
-      <td>
-        ${starText(x.overall_rating)}
-      </td>
+        <td>
+
+          ${
+            x.visit_no
+            ? "الزيارة " +
+              Number(
+                x.visit_no
+              )
+            : "-"
+          }
+
+        </td>
 
 
-      <td>
-        ${starText(x.product_rating)}
-      </td>
+        <td>
+          ${starText(
+            x.overall_rating
+          )}
+        </td>
 
 
-      <td>
-        ${starText(x.service_rating)}
-      </td>
+        <td>
+          ${starText(
+            x.product_rating
+          )}
+        </td>
 
 
-      <td>
-
-        ${
-          x.recommend === true
-
-          ? '<span class="badge yes">نعم</span>'
-
-          : x.recommend === false
-
-          ? '<span class="badge no">لا</span>'
-
-          : '<span class="badge neutral">-</span>'
-        }
-
-      </td>
+        <td>
+          ${starText(
+            x.service_rating
+          )}
+        </td>
 
 
-      <td class="comment">
-        ${safe(x.comment)}
-      </td>
+        <td>
+
+          ${
+            x.recommend === true
+
+            ? '<span class="badge yes">نعم</span>'
+
+            : x.recommend === false
+
+            ? '<span class="badge no">لا</span>'
+
+            : '<span class="badge neutral">-</span>'
+          }
+
+        </td>
 
 
-      <td>
+        <td class="comment">
 
-        ${
-          x.created_at
+          ${safe(
+            x.comment
+          )}
 
-          ? new Date(
-              x.created_at
-            )
-            .toLocaleString(
-              "ar-SA"
-            )
-
-          : "-"
-        }
-
-      </td>
-
-      `;
+        </td>
 
 
-    tbody
-      .appendChild(
+        <td>
+
+          ${
+            x.created_at
+            ? formatFeedbackDate(
+                x.created_at
+              )
+            : "-"
+          }
+
+        </td>
+
+        `;
+
+
+      tbody.appendChild(
         tr
       );
 
-  });
+    }
+
+  );
 
 
   const status =
@@ -1187,14 +1322,109 @@ function renderFeedback(list){
 }
 
 
-/* =========================
-   النجوم
-========================= */
+/* =========================================
+   GREGORIAN + HIJRI DATE
+========================================= */
 
-function starText(value){
+function formatDualDate(
+  dateValue
+){
+
+  if(!dateValue){
+    return "-";
+  }
+
+
+  const d =
+    new Date(
+      dateValue
+    );
+
+
+  const gregorian =
+    new Intl.DateTimeFormat(
+      "ar-SA-u-ca-gregory",
+      {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    ).format(d);
+
+
+  const hijri =
+    new Intl.DateTimeFormat(
+      "ar-SA-u-ca-islamic-umalqura",
+      {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    ).format(d);
+
+
+  return `
+    <div class="date-box">
+
+      <div class="date-gregorian">
+        ${gregorian} م
+      </div>
+
+      <div class="date-hijri">
+        ${hijri} هـ
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   FEEDBACK DATE
+========================================= */
+
+function formatFeedbackDate(
+  dateValue
+){
+
+  if(!dateValue){
+    return "-";
+  }
+
+
+  const d =
+    new Date(
+      dateValue
+    );
+
+
+  return d.toLocaleString(
+    "ar-SA-u-ca-gregory",
+    {
+      day:"numeric",
+      month:"short",
+      year:"numeric",
+      hour:"numeric",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================
+   STARS
+========================================= */
+
+function starText(
+  value
+){
 
   const n =
-    Number(value);
+    Number(
+      value
+    );
 
 
   if(
@@ -1204,6 +1434,7 @@ function starText(value){
   ){
 
     return "-";
+
   }
 
 
@@ -1228,9 +1459,9 @@ function starText(value){
 }
 
 
-/* =========================
-   حماية النص
-========================= */
+/* =========================================
+   SAFE HTML
+========================================= */
 
 function safe(v){
 
@@ -1243,26 +1474,32 @@ function safe(v){
   ){
 
     return "-";
+
   }
 
 
   return String(v)
+
     .replaceAll(
       "&",
       "&amp;"
     )
+
     .replaceAll(
       "<",
       "&lt;"
     )
+
     .replaceAll(
       ">",
       "&gt;"
     )
+
     .replaceAll(
       '"',
       "&quot;"
     )
+
     .replaceAll(
       "'",
       "&#039;"
@@ -1271,14 +1508,18 @@ function safe(v){
 }
 
 
-/* =========================
-   بحث العملاء
-========================= */
+/* =========================================
+   CUSTOMER SEARCH
+========================================= */
 
 document
-  .getElementById("search")
+  .getElementById(
+    "search"
+  )
   .addEventListener(
+
     "input",
+
     function(){
 
       const q =
@@ -1288,7 +1529,8 @@ document
 
 
       const result =
-        data.filter(
+        customerData.filter(
+
           x =>
 
             String(
@@ -1321,19 +1563,22 @@ document
       );
 
     }
+
   );
 
 
-/* =========================
-   بحث التقييمات
-========================= */
+/* =========================================
+   FEEDBACK SEARCH
+========================================= */
 
 document
   .getElementById(
     "feedbackSearch"
   )
   .addEventListener(
+
     "input",
+
     function(){
 
       const q =
@@ -1343,8 +1588,8 @@ document
 
 
       const result =
-        feedbackData
-        .filter(
+        feedbackData.filter(
+
           x =>
 
             String(
@@ -1376,33 +1621,45 @@ document
       );
 
     }
+
   );
 
 
-/* =========================
-   تصدير العملاء
-========================= */
+/* =========================================
+   EXPORT CUSTOMERS CSV
+========================================= */
 
-function exportCSV(){
+function exportCustomersCSV(){
 
-  if(!data.length){
+  if(
+    !customerData.length
+  ){
 
     alert(
       "لا توجد بيانات للتصدير"
     );
 
     return;
+
   }
 
 
   const header = [
+
     "Pass ID",
+
     "Customer Name",
+
     "Phone",
+
     "Paid",
+
     "Cup Received",
+
     "Visits",
+
     "Created At"
+
   ];
 
 
@@ -1410,7 +1667,8 @@ function exportCSV(){
 
     header,
 
-    ...data.map(
+    ...customerData.map(
+
       x => [
 
         x.id,
@@ -1428,22 +1686,29 @@ function exportCSV(){
         x.created_at
 
       ]
+
     )
 
   ]
 
   .map(
+
     row =>
       row
-      .map(
-        v =>
-          `"${String(v ?? "")
-          .replaceAll(
-            '"',
-            '""'
-          )}"`
-      )
-      .join(",")
+        .map(
+
+          v =>
+            `"${String(
+              v ?? ""
+            )
+            .replaceAll(
+              '"',
+              '""'
+            )}"`
+
+        )
+        .join(",")
+
   )
 
   .join("\n");
@@ -1457,9 +1722,9 @@ function exportCSV(){
 }
 
 
-/* =========================
-   تصدير التقييمات
-========================= */
+/* =========================================
+   EXPORT FEEDBACK CSV
+========================================= */
 
 function exportFeedbackCSV(){
 
@@ -1472,6 +1737,7 @@ function exportFeedbackCSV(){
     );
 
     return;
+
   }
 
 
@@ -1500,43 +1766,50 @@ function exportFeedbackCSV(){
 
     header,
 
-    ...feedbackData
-      .map(
-        x => [
+    ...feedbackData.map(
 
-          x.pass_id,
+      x => [
 
-          x.visit_no,
+        x.pass_id,
 
-          x.overall_rating,
+        x.visit_no,
 
-          x.product_rating,
+        x.overall_rating,
 
-          x.service_rating,
+        x.product_rating,
 
-          x.recommend,
+        x.service_rating,
 
-          x.comment,
+        x.recommend,
 
-          x.created_at
+        x.comment,
 
-        ]
-      )
+        x.created_at
+
+      ]
+
+    )
 
   ]
 
   .map(
+
     row =>
       row
-      .map(
-        v =>
-          `"${String(v ?? "")
-          .replaceAll(
-            '"',
-            '""'
-          )}"`
-      )
-      .join(",")
+        .map(
+
+          v =>
+            `"${String(
+              v ?? ""
+            )
+            .replaceAll(
+              '"',
+              '""'
+            )}"`
+
+        )
+        .join(",")
+
   )
 
   .join("\n");
@@ -1550,6 +1823,10 @@ function exportFeedbackCSV(){
 }
 
 
+/* =========================================
+   DOWNLOAD CSV
+========================================= */
+
 function downloadCSV(
   csv,
   filename
@@ -1557,14 +1834,17 @@ function downloadCSV(
 
   const blob =
     new Blob(
+
       [
         "\uFEFF" +
         csv
       ],
+
       {
         type:
           "text/csv;charset=utf-8"
       }
+
     );
 
 
@@ -1576,7 +1856,9 @@ function downloadCSV(
 
   const a =
     document
-      .createElement("a");
+      .createElement(
+        "a"
+      );
 
 
   a.href =
@@ -1587,7 +1869,16 @@ function downloadCSV(
     filename;
 
 
+  document.body
+    .appendChild(
+      a
+    );
+
+
   a.click();
+
+
+  a.remove();
 
 
   URL.revokeObjectURL(
@@ -1597,9 +1888,9 @@ function downloadCSV(
 }
 
 
-/* =========================
-   تشغيل
-========================= */
+/* =========================================
+   START
+========================================= */
 
 loadData();
 
