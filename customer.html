@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <title>بطاقتي | TSK 96 Active Pass</title>
 
 <script src="./config.js"></script>
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
+
 :root{
   --g:#0e6b46;
   --g2:#09583a;
@@ -21,7 +23,9 @@
   --gold:#f5b301;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -35,6 +39,14 @@ body{
   margin:auto;
   padding:18px;
 }
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   LANGUAGE
+========================= */
 
 .lang-area{
   display:flex;
@@ -71,6 +83,10 @@ html[dir="ltr"] .lang-area{
   justify-content:flex-start;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 .hero{
   text-align:center;
   margin-bottom:20px;
@@ -96,6 +112,10 @@ h1{
   font-size:18px;
 }
 
+/* =========================
+   CARD
+========================= */
+
 .card{
   background:var(--card);
   border-radius:28px;
@@ -103,6 +123,10 @@ h1{
   margin-top:20px;
   box-shadow:0 12px 30px rgba(0,0,0,.05);
 }
+
+/* =========================
+   LOOKUP
+========================= */
 
 .lookup{
   display:flex;
@@ -186,16 +210,16 @@ h1{
   font-weight:700;
 }
 
-.hidden{
-  display:none!important;
-}
-
 #error{
   text-align:center;
   margin-top:12px;
   min-height:20px;
   color:#748078;
 }
+
+/* =========================
+   PASS RESULT
+========================= */
 
 .result{
   text-align:center;
@@ -280,7 +304,7 @@ h1{
 }
 
 /* =========================
-   تقييم الزيارة
+   FEEDBACK
 ========================= */
 
 .feedback-card{
@@ -290,48 +314,47 @@ h1{
 }
 
 .feedback-icon{
-  width:58px;
-  height:58px;
-  margin:0 auto 8px;
+  width:64px;
+  height:64px;
+  margin:0 auto 10px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
   background:#edf8f1;
-  font-size:28px;
+  font-size:31px;
 }
 
 .feedback-title{
   color:var(--g);
-  font-size:25px;
+  font-size:27px;
   font-weight:900;
 }
 
 .feedback-sub{
-  margin-top:7px;
+  margin-top:8px;
   color:var(--muted);
   font-size:16px;
+  line-height:1.7;
+}
+
+.required-note{
+  margin:14px 0 4px;
+  padding:11px;
+  border-radius:13px;
+  background:#fff8e6;
+  color:#855f00;
+  font-size:14px;
+  font-weight:800;
   line-height:1.6;
 }
 
-.rateBtn{
-  width:100%;
-  height:58px;
-  margin-top:18px;
-  border:0;
-  border-radius:18px;
-  background:var(--g);
-  color:#fff;
-  font-size:19px;
-  font-weight:900;
-}
-
 .rating-form{
-  margin-top:20px;
+  margin-top:10px;
 }
 
 .rating-section{
-  padding:17px 0;
+  padding:18px 0;
   border-bottom:1px solid var(--line);
 }
 
@@ -342,7 +365,18 @@ h1{
 .rating-label{
   font-size:17px;
   font-weight:900;
-  margin-bottom:10px;
+  margin-bottom:11px;
+}
+
+.required{
+  color:var(--danger);
+  font-weight:900;
+}
+
+.optional{
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
 }
 
 .stars{
@@ -356,9 +390,10 @@ h1{
   border:0;
   background:transparent;
   padding:0;
-  font-size:39px;
+  font-size:41px;
   line-height:1;
   color:#d6dcd8;
+  cursor:pointer;
 }
 
 .star.active{
@@ -373,7 +408,7 @@ h1{
 
 .recBtn{
   flex:1;
-  height:48px;
+  height:50px;
   border:1.5px solid #d6ded9;
   border-radius:14px;
   background:#fff;
@@ -405,7 +440,7 @@ h1{
 
 .submitRating{
   width:100%;
-  height:56px;
+  height:58px;
   margin-top:18px;
   border:0;
   border-radius:17px;
@@ -413,10 +448,13 @@ h1{
   color:#fff;
   font-size:18px;
   font-weight:900;
+  transition:.2s;
 }
 
 .submitRating:disabled{
-  opacity:.55;
+  background:#b9c5be;
+  opacity:1;
+  cursor:not-allowed;
 }
 
 .feedbackMessage{
@@ -434,6 +472,10 @@ h1{
   line-height:1.7;
 }
 
+/* =========================
+   FOOTER
+========================= */
+
 .footer{
   text-align:center;
   color:var(--muted);
@@ -443,11 +485,27 @@ h1{
 }
 
 @media(max-width:420px){
-  h1{font-size:29px}
-  .wrap{padding:14px}
-  .lookup input{font-size:17px}
-  .showBtn{width:90px}
-  .passid{font-size:34px}
+
+  h1{
+    font-size:29px;
+  }
+
+  .wrap{
+    padding:14px;
+  }
+
+  .lookup input{
+    font-size:17px;
+  }
+
+  .showBtn{
+    width:90px;
+  }
+
+  .passid{
+    font-size:34px;
+  }
+
 }
 </style>
 </head>
@@ -456,7 +514,10 @@ h1{
 
 <div class="wrap">
 
+  <!-- LANGUAGE -->
+
   <div class="lang-area">
+
     <div class="lang-switch">
 
       <button
@@ -474,8 +535,11 @@ h1{
       </button>
 
     </div>
+
   </div>
 
+
+  <!-- HEADER -->
 
   <div class="hero">
 
@@ -484,7 +548,9 @@ h1{
       src="./IMG_6646.jpeg"
       alt="TSK Active Company">
 
-    <h1>TSK 96 ACTIVE PASS</h1>
+    <h1>
+      TSK 96 ACTIVE PASS
+    </h1>
 
     <div
       class="subtitle"
@@ -494,6 +560,8 @@ h1{
 
   </div>
 
+
+  <!-- LOOKUP -->
 
   <div class="card">
 
@@ -556,59 +624,9 @@ h1{
   </div>
 
 
-  <div
-    id="result"
-    class="card result hidden">
-
-    <div
-      id="pid"
-      class="passid">
-    </div>
-
-    <div
-      id="status"
-      class="status">
-    </div>
-
-    <div
-      id="progress"
-      class="progress">
-    </div>
-
-    <div class="details">
-
-      <div class="row">
-        <b id="usedLabel">
-          الزيارات المستخدمة
-        </b>
-        <span id="used"></span>
-      </div>
-
-      <div class="row">
-        <b id="leftLabel">
-          الزيارات المتبقية
-        </b>
-        <span
-          id="left"
-          class="ok">
-        </span>
-      </div>
-
-      <div class="row">
-        <b id="cupLabel">
-          الكوب
-        </b>
-        <span id="cup"></span>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       تقييم الزيارة
-  ====================== -->
+  <!-- =========================
+       FEEDBACK FIRST
+  ========================== -->
 
   <div
     id="feedbackCard"
@@ -629,21 +647,21 @@ h1{
       class="feedback-sub">
     </div>
 
+    <div
+      id="requiredNote"
+      class="required-note">
+      يرجى الإجابة على جميع التقييمات قبل عرض البطاقة.
+    </div>
+
 
     <div id="feedbackArea">
 
-      <button
-        id="rateBtn"
-        class="rateBtn"
-        type="button">
-        ⭐ قيّم زيارتك
-      </button>
-
-
       <div
         id="ratingForm"
-        class="rating-form hidden">
+        class="rating-form">
 
+
+        <!-- OVERALL -->
 
         <div class="rating-section">
 
@@ -651,6 +669,7 @@ h1{
             id="overallLabel"
             class="rating-label">
             التقييم العام
+            <span class="required">*</span>
           </div>
 
           <div
@@ -668,12 +687,15 @@ h1{
         </div>
 
 
+        <!-- PRODUCT -->
+
         <div class="rating-section">
 
           <div
             id="productLabel"
             class="rating-label">
             جودة المنتج
+            <span class="required">*</span>
           </div>
 
           <div
@@ -691,12 +713,15 @@ h1{
         </div>
 
 
+        <!-- SERVICE -->
+
         <div class="rating-section">
 
           <div
             id="serviceLabel"
             class="rating-label">
             مستوى الخدمة
+            <span class="required">*</span>
           </div>
 
           <div
@@ -714,6 +739,8 @@ h1{
         </div>
 
 
+        <!-- RECOMMEND ONLY VISIT 3 -->
+
         <div
           id="recommendSection"
           class="rating-section hidden">
@@ -722,6 +749,7 @@ h1{
             id="recommendLabel"
             class="rating-label">
             هل تنصح بتجربة TSK Active؟
+            <span class="required">*</span>
           </div>
 
           <div class="recommend">
@@ -745,12 +773,17 @@ h1{
         </div>
 
 
+        <!-- COMMENT OPTIONAL -->
+
         <div class="rating-section">
 
           <div
             id="commentLabel"
             class="rating-label">
-            ملاحظتك (اختياري)
+            ملاحظتك
+            <span class="optional">
+              (اختياري)
+            </span>
           </div>
 
           <textarea
@@ -765,7 +798,8 @@ h1{
         <button
           id="submitRating"
           class="submitRating"
-          type="button">
+          type="button"
+          disabled>
           إرسال التقييم
         </button>
 
@@ -788,11 +822,78 @@ h1{
   </div>
 
 
+  <!-- =========================
+       PASS RESULT
+  ========================== -->
+
+  <div
+    id="result"
+    class="card result hidden">
+
+    <div
+      id="pid"
+      class="passid">
+    </div>
+
+    <div
+      id="status"
+      class="status">
+    </div>
+
+    <div
+      id="progress"
+      class="progress">
+    </div>
+
+    <div class="details">
+
+      <div class="row">
+
+        <b id="usedLabel">
+          الزيارات المستخدمة
+        </b>
+
+        <span id="used"></span>
+
+      </div>
+
+
+      <div class="row">
+
+        <b id="leftLabel">
+          الزيارات المتبقية
+        </b>
+
+        <span
+          id="left"
+          class="ok">
+        </span>
+
+      </div>
+
+
+      <div class="row">
+
+        <b id="cupLabel">
+          الكوب
+        </b>
+
+        <span id="cup"></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
   <div
     class="footer"
     id="footerText">
+
     يتم تحديث الزيارات تلقائياً عند تسجيلها
     في أي فرع من فروع TSK Active.
+
   </div>
 
 </div>
@@ -800,42 +901,69 @@ h1{
 
 <script>
 
+/* =========================
+   CONFIG
+========================= */
+
 const cfg =
   window.TSK96_CONFIG ||
   window.CONFIG ||
   window.config ||
   {};
 
+
 const $ =
-  id => document.getElementById(id);
+  id =>
+    document.getElementById(id);
 
 
 let currentLang =
-  localStorage.getItem("tsk96_lang") || "ar";
+  localStorage.getItem(
+    "tsk96_lang"
+  ) || "ar";
 
-let currentPassData = null;
 
-let scanner = null;
+let currentPassData =
+  null;
 
-let currentFeedbackVisit = 0;
+
+let scanner =
+  null;
+
+
+let currentFeedbackVisit =
+  0;
+
+
+let feedbackGateActive =
+  false;
+
 
 let ratingValues = {
+
   overall:0,
+
   product:0,
+
   service:0
+
 };
 
-let recommendValue = null;
+
+let recommendValue =
+  null;
 
 
 /* =========================
-   اللغة
+   LANGUAGE TEXT
 ========================= */
 
 const texts = {
 
   ar:{
-    title:"بطاقتي | TSK 96 Active Pass",
+
+    title:
+      "بطاقتي | TSK 96 Active Pass",
 
     subtitle:
       "بطاقتك الرياضية في فروع TSK Active",
@@ -843,14 +971,17 @@ const texts = {
     lookupPlaceholder:
       "رقم الجوال أو رقم البطاقة",
 
-    show:"عرض",
+    show:
+      "عرض",
 
     note:
       "أدخل رقم الجوال أو رقم البطاقة أو امسح الباركود.",
 
-    or:"أو",
+    or:
+      "أو",
 
-    scan:"▣  مسح الباركود",
+    scan:
+      "▣  مسح الباركود",
 
     closeCamera:
       "إغلاق الكاميرا",
@@ -894,11 +1025,14 @@ const texts = {
     active:
       "البطاقة فعّالة",
 
-    from:"من",
+    from:
+      "من",
 
-    visits:"زيارات",
+    visits:
+      "زيارات",
 
-    visit:"زيارة",
+    visit:
+      "زيارة",
 
     cupReceived:
       "✓ تم الاستلام",
@@ -912,8 +1046,8 @@ const texts = {
     feedbackVisit:
       "شاركنا تجربتك في الزيارة رقم",
 
-    rate:
-      "⭐ قيّم زيارتك",
+    requiredNote:
+      "يرجى الإجابة على جميع التقييمات المطلوبة قبل عرض البطاقة.",
 
     overall:
       "التقييم العام",
@@ -927,12 +1061,17 @@ const texts = {
     recommend:
       "هل تنصح بتجربة TSK Active؟",
 
-    yes:"نعم",
+    yes:
+      "نعم",
 
-    no:"لا",
+    no:
+      "لا",
 
     comment:
-      "ملاحظتك (اختياري)",
+      "ملاحظتك",
+
+    optional:
+      "(اختياري)",
 
     commentPlaceholder:
       "اكتب ملاحظتك هنا...",
@@ -940,8 +1079,11 @@ const texts = {
     submit:
       "إرسال التقييم",
 
-    chooseOverall:
-      "يرجى اختيار التقييم العام.",
+    completeRequired:
+      "يرجى الإجابة على جميع التقييمات المطلوبة.",
+
+    chooseRecommend:
+      "يرجى اختيار نعم أو لا.",
 
     sending:
       "جاري إرسال التقييم...",
@@ -950,14 +1092,16 @@ const texts = {
       "شكراً لك 🌟 تم إرسال تقييم الزيارة رقم",
 
     already:
-      "شكراً لك 🌟 تم تقييم الزيارة رقم",
+      "تم تقييم الزيارة رقم",
 
     sendError:
       "تعذر إرسال التقييم. حاول مرة أخرى."
+
   },
 
 
   en:{
+
     title:
       "My Pass | TSK 96 Active Pass",
 
@@ -1042,8 +1186,8 @@ const texts = {
     feedbackVisit:
       "Tell us about your experience on Visit",
 
-    rate:
-      "⭐ Rate This Visit",
+    requiredNote:
+      "Please complete all required ratings before viewing your pass.",
 
     overall:
       "Overall Rating",
@@ -1064,7 +1208,10 @@ const texts = {
       "No",
 
     comment:
-      "Comment (optional)",
+      "Comment",
+
+    optional:
+      "(optional)",
 
     commentPlaceholder:
       "Write your comment here...",
@@ -1072,8 +1219,11 @@ const texts = {
     submit:
       "Submit Rating",
 
-    chooseOverall:
-      "Please select an overall rating.",
+    completeRequired:
+      "Please complete all required ratings.",
+
+    chooseRecommend:
+      "Please select Yes or No.",
 
     sending:
       "Submitting your rating...",
@@ -1082,19 +1232,30 @@ const texts = {
       "Thank you 🌟 Your rating was submitted for Visit",
 
     already:
-      "Thank you 🌟 Visit already rated:",
+      "Visit already rated:",
 
     sendError:
       "Unable to submit your rating. Please try again."
+
   }
 
 };
 
 
 function tr(key){
-  return texts[currentLang][key] || key;
+
+  return (
+    texts[currentLang][key]
+    ||
+    key
+  );
+
 }
 
+
+/* =========================
+   LANGUAGE
+========================= */
 
 function setLanguage(lang){
 
@@ -1103,12 +1264,15 @@ function setLanguage(lang){
       ? "en"
       : "ar";
 
+
   localStorage.setItem(
     "tsk96_lang",
     currentLang
   );
 
+
   applyLanguage();
+
 }
 
 
@@ -1119,11 +1283,15 @@ function applyLanguage(){
 
 
   document.documentElement.lang =
-    en ? "en" : "ar";
+    en
+      ? "en"
+      : "ar";
 
 
   document.documentElement.dir =
-    en ? "ltr" : "rtl";
+    en
+      ? "ltr"
+      : "rtl";
 
 
   document.title =
@@ -1178,24 +1346,28 @@ function applyLanguage(){
     tr("feedbackTitle");
 
 
-  $("rateBtn").textContent =
-    tr("rate");
+  $("requiredNote").textContent =
+    tr("requiredNote");
 
 
-  $("overallLabel").textContent =
-    tr("overall");
+  $("overallLabel").innerHTML =
+    tr("overall") +
+    ' <span class="required">*</span>';
 
 
-  $("productLabel").textContent =
-    tr("product");
+  $("productLabel").innerHTML =
+    tr("product") +
+    ' <span class="required">*</span>';
 
 
-  $("serviceLabel").textContent =
-    tr("service");
+  $("serviceLabel").innerHTML =
+    tr("service") +
+    ' <span class="required">*</span>';
 
 
-  $("recommendLabel").textContent =
-    tr("recommend");
+  $("recommendLabel").innerHTML =
+    tr("recommend") +
+    ' <span class="required">*</span>';
 
 
   $("yesBtn").textContent =
@@ -1206,8 +1378,11 @@ function applyLanguage(){
     tr("no");
 
 
-  $("commentLabel").textContent =
-    tr("comment");
+  $("commentLabel").innerHTML =
+    tr("comment") +
+    ' <span class="optional">' +
+    tr("optional") +
+    "</span>";
 
 
   $("commentBox").placeholder =
@@ -1218,35 +1393,40 @@ function applyLanguage(){
     tr("submit");
 
 
-  $("arBtn")
-    .classList.toggle(
-      "active",
-      !en
-    );
+  $("arBtn").classList.toggle(
+    "active",
+    !en
+  );
 
 
-  $("enBtn")
-    .classList.toggle(
-      "active",
-      en
-    );
+  $("enBtn").classList.toggle(
+    "active",
+    en
+  );
 
 
   if(currentPassData){
-    renderPass(currentPassData);
+
+    renderPass(
+      currentPassData,
+      true
+    );
+
   }
+
 }
 
 
 /* =========================
-   تنسيق رقم البطاقة
+   NORMALIZE PASS
 ========================= */
 
 function normalizePass(v){
 
-  v = String(v || "")
-    .trim()
-    .toUpperCase();
+  v =
+    String(v || "")
+      .trim()
+      .toUpperCase();
 
 
   if(!v){
@@ -1255,7 +1435,9 @@ function normalizePass(v){
 
 
   const urlMatch =
-    v.match(/[?&]id=([^&#]+)/i);
+    v.match(
+      /[?&]id=([^&#]+)/i
+    );
 
 
   if(urlMatch){
@@ -1271,11 +1453,15 @@ function normalizePass(v){
 
       v =
         urlMatch[1];
+
     }
 
 
     v =
-      v.trim().toUpperCase();
+      v
+        .trim()
+        .toUpperCase();
+
   }
 
 
@@ -1283,11 +1469,14 @@ function normalizePass(v){
     /^\d{1,3}$/.test(v)
   ){
 
-    return "TSK96-" +
+    return (
+      "TSK96-" +
       v.padStart(
         3,
         "0"
-      );
+      )
+    );
+
   }
 
 
@@ -1296,29 +1485,39 @@ function normalizePass(v){
   ){
 
     const number =
-      v.match(/\d{1,3}$/);
+      v.match(
+        /\d{1,3}$/
+      );
 
 
     if(number){
 
-      return "TSK96-" +
+      return (
+        "TSK96-" +
         number[0].padStart(
           3,
           "0"
-        );
+        )
+      );
+
     }
+
   }
 
 
   return v;
+
 }
 
 
 /* =========================
-   نظام التقييم
+   FEEDBACK KEY
 ========================= */
 
-function feedbackKey(passId,visitNo){
+function feedbackKey(
+  passId,
+  visitNo
+){
 
   return (
     "tsk96_feedback_" +
@@ -1326,62 +1525,157 @@ function feedbackKey(passId,visitNo){
     "_visit_" +
     visitNo
   );
+
 }
 
+
+/* =========================
+   RESET FEEDBACK
+========================= */
 
 function resetFeedback(){
 
   ratingValues = {
+
     overall:0,
+
     product:0,
+
     service:0
+
   };
 
-  recommendValue = null;
 
-  $("commentBox").value = "";
+  recommendValue =
+    null;
 
-  $("feedbackMessage").textContent = "";
 
-  $("ratingForm")
-    .classList.add("hidden");
+  $("commentBox").value =
+    "";
 
-  $("rateBtn")
-    .classList.remove("hidden");
+
+  $("feedbackMessage").textContent =
+    "";
+
 
   $("feedbackArea")
-    .classList.remove("hidden");
+    .classList
+    .remove(
+      "hidden"
+    );
+
 
   $("feedbackThanks")
-    .classList.add("hidden");
+    .classList
+    .add(
+      "hidden"
+    );
 
 
   document
-    .querySelectorAll(".star")
-    .forEach(star => {
-      star.classList.remove("active");
-    });
+    .querySelectorAll(
+      ".star"
+    )
+    .forEach(
+
+      star => {
+
+        star.classList.remove(
+          "active"
+        );
+
+      }
+
+    );
 
 
   $("yesBtn")
-    .classList.remove("active");
+    .classList
+    .remove(
+      "active"
+    );
 
 
   $("noBtn")
-    .classList.remove("active");
+    .classList
+    .remove(
+      "active"
+    );
+
+
+  updateSubmitState();
+
 }
 
 
-function setupFeedback(p,count){
+/* =========================
+   REQUIRED CHECK
+========================= */
+
+function requiredRatingsComplete(){
+
+  if(
+    !ratingValues.overall
+    ||
+    !ratingValues.product
+    ||
+    !ratingValues.service
+  ){
+
+    return false;
+
+  }
+
+
+  if(
+    currentFeedbackVisit >= 3
+    &&
+    recommendValue === null
+  ){
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+function updateSubmitState(){
+
+  $("submitRating").disabled =
+    !requiredRatingsComplete();
+
+}
+
+
+/* =========================
+   SETUP FEEDBACK GATE
+========================= */
+
+function setupFeedback(
+  p,
+  count,
+  preserveState = false
+){
 
   const card =
     $("feedbackCard");
 
 
+  feedbackGateActive =
+    false;
+
+
   if(
-    !p ||
-    !p.active ||
-    !p.paid ||
+    !p
+    ||
+    !p.active
+    ||
+    !p.paid
+    ||
     count < 1
   ){
 
@@ -1389,7 +1683,16 @@ function setupFeedback(p,count){
       "hidden"
     );
 
+
+    $("result")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+
     return;
+
   }
 
 
@@ -1397,7 +1700,61 @@ function setupFeedback(p,count){
     count;
 
 
-  resetFeedback();
+  const rated =
+    localStorage.getItem(
+
+      feedbackKey(
+        p.id,
+        currentFeedbackVisit
+      )
+
+    ) === "1";
+
+
+  if(rated){
+
+    card.classList.add(
+      "hidden"
+    );
+
+
+    $("result")
+      .classList
+      .remove(
+        "hidden"
+      );
+
+
+    feedbackGateActive =
+      false;
+
+
+    return;
+
+  }
+
+
+  feedbackGateActive =
+    true;
+
+
+  $("result")
+    .classList
+    .add(
+      "hidden"
+    );
+
+
+  card.classList.remove(
+    "hidden"
+  );
+
+
+  if(!preserveState){
+
+    resetFeedback();
+
+  }
 
 
   $("feedbackSub").textContent =
@@ -1407,50 +1764,39 @@ function setupFeedback(p,count){
 
 
   $("recommendSection")
-    .classList.toggle(
+    .classList
+    .toggle(
       "hidden",
       currentFeedbackVisit < 3
     );
 
 
-  const rated =
-    localStorage.getItem(
-      feedbackKey(
-        p.id,
-        currentFeedbackVisit
-      )
-    ) === "1";
+  updateSubmitState();
 
 
-  card.classList.remove(
-    "hidden"
+  setTimeout(
+    () => {
+
+      card.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+    },
+    150
   );
 
-
-  if(rated){
-
-    $("feedbackArea")
-      .classList.add(
-        "hidden"
-      );
-
-
-    $("feedbackThanks")
-      .classList.remove(
-        "hidden"
-      );
-
-
-    $("feedbackThanks").textContent =
-      tr("already") +
-      " " +
-      currentFeedbackVisit +
-      " ⭐";
-  }
 }
 
 
-function updateStars(type,value){
+/* =========================
+   STARS
+========================= */
+
+function updateStars(
+  type,
+  value
+){
 
   ratingValues[type] =
     value;
@@ -1462,90 +1808,113 @@ function updateStars(type,value){
       type +
       '"] .star'
     )
-    .forEach(star => {
+    .forEach(
 
-      const v =
-        Number(
-          star.dataset.value
+      star => {
+
+        const v =
+          Number(
+            star.dataset.value
+          );
+
+
+        star.classList.toggle(
+          "active",
+          v <= value
         );
 
+      }
 
-      star.classList.toggle(
-        "active",
-        v <= value
-      );
+    );
 
-    });
+
+  $("feedbackMessage").textContent =
+    "";
+
+
+  updateSubmitState();
+
 }
 
 
 document
-  .querySelectorAll(".stars")
-  .forEach(group => {
+  .querySelectorAll(
+    ".stars"
+  )
+  .forEach(
 
-    const type =
-      group.dataset.rating;
+    group => {
+
+      const type =
+        group.dataset.rating;
 
 
-    group
-      .querySelectorAll(".star")
-      .forEach(star => {
+      group
+        .querySelectorAll(
+          ".star"
+        )
+        .forEach(
 
-        star.addEventListener(
-          "click",
-          () => {
+          star => {
 
-            updateStars(
-              type,
-              Number(
-                star.dataset.value
-              )
+            star.addEventListener(
+              "click",
+              () => {
+
+                updateStars(
+
+                  type,
+
+                  Number(
+                    star.dataset.value
+                  )
+
+                );
+
+              }
             );
 
           }
-        );
 
-      });
-
-  });
-
-
-$("rateBtn")
-  .addEventListener(
-    "click",
-    () => {
-
-      $("rateBtn")
-        .classList.add(
-          "hidden"
-        );
-
-
-      $("ratingForm")
-        .classList.remove(
-          "hidden"
         );
 
     }
+
   );
 
+
+/* =========================
+   RECOMMEND
+========================= */
 
 $("yesBtn")
   .addEventListener(
     "click",
     () => {
 
-      recommendValue = true;
+      recommendValue =
+        true;
+
 
       $("yesBtn")
-        .classList.add(
+        .classList
+        .add(
           "active"
         );
 
+
       $("noBtn")
-        .classList.remove(
+        .classList
+        .remove(
           "active"
         );
+
+
+      $("feedbackMessage").textContent =
+        "";
+
+
+      updateSubmitState();
 
     }
   );
@@ -1556,58 +1925,107 @@ $("noBtn")
     "click",
     () => {
 
-      recommendValue = false;
+      recommendValue =
+        false;
+
 
       $("noBtn")
-        .classList.add(
+        .classList
+        .add(
           "active"
         );
 
+
       $("yesBtn")
-        .classList.remove(
+        .classList
+        .remove(
           "active"
         );
+
+
+      $("feedbackMessage").textContent =
+        "";
+
+
+      updateSubmitState();
 
     }
   );
 
 
+/* =========================
+   SUBMIT FEEDBACK
+========================= */
+
 async function submitCustomerRating(){
 
   if(
-    !currentPassData ||
+    !currentPassData
+    ||
     currentFeedbackVisit < 1
   ){
+
     return;
+
   }
 
 
   if(
     !ratingValues.overall
+    ||
+    !ratingValues.product
+    ||
+    !ratingValues.service
   ){
 
     $("feedbackMessage").style.color =
       varDanger();
 
+
     $("feedbackMessage").textContent =
-      tr("chooseOverall");
+      tr("completeRequired");
+
 
     return;
+
   }
 
 
   if(
-    !cfg.SUPABASE_URL ||
+    currentFeedbackVisit >= 3
+    &&
+    recommendValue === null
+  ){
+
+    $("feedbackMessage").style.color =
+      varDanger();
+
+
+    $("feedbackMessage").textContent =
+      tr("chooseRecommend");
+
+
+    return;
+
+  }
+
+
+  if(
+    !cfg.SUPABASE_URL
+    ||
     !cfg.SUPABASE_ANON_KEY
   ){
 
     $("feedbackMessage").style.color =
       varDanger();
 
+
     $("feedbackMessage").textContent =
       tr("connecting");
 
+
     return;
+
   }
 
 
@@ -1642,10 +2060,10 @@ async function submitCustomerRating(){
       ratingValues.overall,
 
     product_rating:
-      ratingValues.product || null,
+      ratingValues.product,
 
     service_rating:
-      ratingValues.service || null,
+      ratingValues.service,
 
     experience_rating:
       ratingValues.overall,
@@ -1660,6 +2078,7 @@ async function submitCustomerRating(){
         .value
         .trim()
         || null
+
   };
 
 
@@ -1707,6 +2126,7 @@ async function submitCustomerRating(){
             )
 
         }
+
       );
 
 
@@ -1716,6 +2136,7 @@ async function submitCustomerRating(){
         "HTTP " +
         r.status
       );
+
     }
 
 
@@ -1727,17 +2148,24 @@ async function submitCustomerRating(){
       ),
 
       "1"
+
     );
 
 
+    feedbackGateActive =
+      false;
+
+
     $("feedbackArea")
-      .classList.add(
+      .classList
+      .add(
         "hidden"
       );
 
 
     $("feedbackThanks")
-      .classList.remove(
+      .classList
+      .remove(
         "hidden"
       );
 
@@ -1747,6 +2175,34 @@ async function submitCustomerRating(){
       " " +
       currentFeedbackVisit +
       " ⭐";
+
+
+    setTimeout(
+      () => {
+
+        $("feedbackCard")
+          .classList
+          .add(
+            "hidden"
+          );
+
+
+        $("result")
+          .classList
+          .remove(
+            "hidden"
+          );
+
+
+        $("result")
+          .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+          });
+
+      },
+      900
+    );
 
 
   }catch(e){
@@ -1762,14 +2218,17 @@ async function submitCustomerRating(){
       tr("sendError");
 
 
-    button.disabled =
-      false;
+    updateSubmitState();
+
   }
+
 }
 
 
 function varDanger(){
+
   return "#b42318";
+
 }
 
 
@@ -1781,12 +2240,17 @@ $("submitRating")
 
 
 /* =========================
-   عرض البطاقة
+   RENDER PASS
 ========================= */
 
-function renderPass(p){
+function renderPass(
+  p,
+  preserveFeedbackState = false
+){
 
-  if(!p) return;
+  if(!p){
+    return;
+  }
 
 
   currentPassData =
@@ -1814,27 +2278,35 @@ function renderPass(p){
     $("status").textContent =
       tr("stopped");
 
-  }else if(!p.paid){
+  }
+
+  else if(!p.paid){
 
     $("status").textContent =
       tr("notActivated");
 
-  }else if(count >= 3){
+  }
+
+  else if(count >= 3){
 
     $("status").textContent =
       tr("completed");
 
-  }else{
+  }
+
+  else{
 
     $("status").textContent =
       tr("active");
+
   }
 
 
   if(currentLang === "en"){
 
     $("used").textContent =
-      count + " of 3";
+      count +
+      " of 3";
 
 
     $("left").textContent =
@@ -1845,7 +2317,9 @@ function renderPass(p){
       " " +
       tr("visits");
 
-  }else{
+  }
+
+  else{
 
     $("used").textContent =
       count +
@@ -1861,6 +2335,7 @@ function renderPass(p){
       ) +
       " " +
       tr("visits");
+
   }
 
 
@@ -1877,38 +2352,46 @@ function renderPass(p){
 
 
   $("progress").innerHTML =
+
     [1,2,3]
-      .map(n => `
 
-        <div class="visit ${count >= n ? "done" : ""}">
+      .map(
+        n => `
 
-          <strong>${n}</strong>
+          <div
+            class="visit ${
+              count >= n
+                ? "done"
+                : ""
+            }">
 
-          <span>
-            ${tr("visit")} ${n}
-          </span>
+            <strong>
+              ${n}
+            </strong>
 
-        </div>
+            <span>
+              ${tr("visit")} ${n}
+            </span>
 
-      `)
+          </div>
+
+        `
+      )
+
       .join("");
-
-
-  $("result")
-    .classList.remove(
-      "hidden"
-    );
 
 
   setupFeedback(
     p,
-    count
+    count,
+    preserveFeedbackState
   );
+
 }
 
 
 /* =========================
-   تحميل البطاقة
+   LOAD PASS
 ========================= */
 
 async function loadCustomerPass(raw){
@@ -1916,16 +2399,23 @@ async function loadCustomerPass(raw){
   const input =
     $("passInput");
 
+
   const result =
     $("result");
+
 
   const errBox =
     $("error");
 
 
   const value =
-    (raw || input.value || "")
-      .trim();
+    (
+      raw
+      ||
+      input.value
+      ||
+      ""
+    ).trim();
 
 
   const digits =
@@ -1938,12 +2428,15 @@ async function loadCustomerPass(raw){
   let phoneSearch =
     "";
 
+
   let id =
     "";
 
 
   if(
-    /^05\d{8}$/.test(digits)
+    /^05\d{8}$/.test(
+      digits
+    )
   ){
 
     phoneSearch =
@@ -1951,8 +2444,11 @@ async function loadCustomerPass(raw){
 
   }
 
+
   else if(
-    /^9665\d{8}$/.test(digits)
+    /^9665\d{8}$/.test(
+      digits
+    )
   ){
 
     phoneSearch =
@@ -1961,8 +2457,11 @@ async function loadCustomerPass(raw){
 
   }
 
+
   else if(
-    /^009665\d{8}$/.test(digits)
+    /^009665\d{8}$/.test(
+      digits
+    )
   ){
 
     phoneSearch =
@@ -1971,17 +2470,21 @@ async function loadCustomerPass(raw){
 
   }
 
+
   else{
 
     id =
       normalizePass(
         value
       );
+
   }
 
 
   input.value =
-    phoneSearch || id;
+    phoneSearch
+    ||
+    id;
 
 
   result.classList.add(
@@ -1990,7 +2493,8 @@ async function loadCustomerPass(raw){
 
 
   $("feedbackCard")
-    .classList.add(
+    .classList
+    .add(
       "hidden"
     );
 
@@ -2000,15 +2504,19 @@ async function loadCustomerPass(raw){
 
 
   if(
-    !id &&
+    !id
+    &&
     !phoneSearch
   ){
+
     return;
+
   }
 
 
   if(
-    !cfg.SUPABASE_URL ||
+    !cfg.SUPABASE_URL
+    ||
     !cfg.SUPABASE_ANON_KEY
   ){
 
@@ -2021,6 +2529,7 @@ async function loadCustomerPass(raw){
 
 
     return;
+
   }
 
 
@@ -2086,6 +2595,7 @@ async function loadCustomerPass(raw){
           }
 
         }
+
       );
 
 
@@ -2095,6 +2605,7 @@ async function loadCustomerPass(raw){
         "HTTP " +
         r.status
       );
+
     }
 
 
@@ -2103,7 +2614,8 @@ async function loadCustomerPass(raw){
 
 
     const p =
-      rows &&
+      rows
+      &&
       rows[0];
 
 
@@ -2118,6 +2630,7 @@ async function loadCustomerPass(raw){
 
 
       return;
+
     }
 
 
@@ -2125,7 +2638,10 @@ async function loadCustomerPass(raw){
       p;
 
 
-    renderPass(p);
+    renderPass(
+      p,
+      false
+    );
 
 
     errBox.textContent =
@@ -2143,12 +2659,14 @@ async function loadCustomerPass(raw){
 
     errBox.textContent =
       tr("loadError");
+
   }
+
 }
 
 
 /* =========================
-   QR
+   QR SCANNER
 ========================= */
 
 async function startScanner(){
@@ -2186,12 +2704,14 @@ async function startScanner(){
       },
 
       {
+
         fps:10,
 
         qrbox:{
           width:230,
           height:230
         }
+
       },
 
 
@@ -2253,7 +2773,9 @@ async function startScanner(){
 
     errBox.textContent =
       tr("cameraError");
+
   }
+
 }
 
 
@@ -2263,9 +2785,12 @@ async function stopScanner(){
 
     try{
 
-      if(scanner.isScanning){
+      if(
+        scanner.isScanning
+      ){
 
         await scanner.stop();
+
       }
 
 
@@ -2277,25 +2802,31 @@ async function stopScanner(){
 
     scanner =
       null;
+
   }
 
 
   $("scannerBox")
-    .classList.add(
+    .classList
+    .add(
       "hidden"
     );
+
 }
 
 
 /* =========================
-   الأزرار
+   BUTTONS
 ========================= */
 
 $("showBtn")
   .addEventListener(
     "click",
-    () =>
-      loadCustomerPass()
+    () => {
+
+      loadCustomerPass();
+
+    }
   );
 
 
@@ -2323,6 +2854,7 @@ $("passInput")
       ){
 
         loadCustomerPass();
+
       }
 
     }
@@ -2330,7 +2862,7 @@ $("passInput")
 
 
 /* =========================
-   تشغيل الصفحة
+   PAGE START
 ========================= */
 
 window.addEventListener(
@@ -2355,6 +2887,7 @@ window.addEventListener(
       loadCustomerPass(
         q
       );
+
     }
 
   }
