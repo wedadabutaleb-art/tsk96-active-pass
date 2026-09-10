@@ -9,40 +9,68 @@
 <script src="./config.js"></script>
 
 <style>
+:root{
+  --g:#0e5b3c;
+  --g2:#0e6b46;
+  --bg:#f5f7f5;
+  --card:#ffffff;
+  --text:#172019;
+  --muted:#777;
+  --line:#eeeeee;
+  --gold:#f4b400;
+  --red:#9b2929;
+}
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#f5f7f5;
-  color:#172019;
+  background:var(--bg);
+  color:var(--text);
 }
+
 .wrap{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
   padding:18px;
 }
+
 .header{
   text-align:center;
   margin-bottom:20px;
 }
+
 .logo{
   width:95px;
   height:95px;
   object-fit:contain;
   border-radius:20px;
 }
+
 h1{
   margin:10px 0 3px;
-  color:#0e5b3c;
+  color:var(--g);
 }
-.sub{color:#69736c}
+
+.sub{
+  color:#69736c;
+}
+
+.section-title{
+  margin:26px 0 12px;
+  font-size:21px;
+  font-weight:900;
+  color:var(--g);
+}
 
 .cards{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:10px;
   margin:18px 0;
 }
+
 .card{
   background:white;
   padding:16px;
@@ -50,22 +78,30 @@ h1{
   text-align:center;
   box-shadow:0 3px 15px #0000000d;
 }
+
 .num{
   font-size:28px;
   font-weight:bold;
-  color:#0e5b3c;
+  color:var(--g);
 }
+
+.num.gold{
+  color:#d79a00;
+}
+
 .label{
   font-size:13px;
   color:#777;
   margin-top:5px;
 }
+
 .tools{
   background:#fff;
   padding:14px;
   border-radius:18px;
   margin-bottom:14px;
 }
+
 input{
   width:100%;
   padding:14px;
@@ -73,502 +109,1293 @@ input{
   border-radius:12px;
   font-size:16px;
 }
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin:12px 0;
+  flex-wrap:wrap;
+}
+
+button{
+  border:0;
+  background:var(--g);
+  color:white;
+  padding:12px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button.secondary{
+  background:#edf4f0;
+  color:var(--g);
+  border:1px solid #cfe0d6;
+}
+
 .tablebox{
   background:#fff;
   border-radius:18px;
   overflow:auto;
   box-shadow:0 3px 15px #0000000d;
 }
+
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:760px;
+  min-width:820px;
 }
+
+.feedback-table{
+  min-width:1050px;
+}
+
 th,td{
   padding:13px 10px;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid var(--line);
   text-align:right;
   font-size:14px;
+  vertical-align:top;
 }
+
 th{
-  background:#0e5b3c;
+  background:var(--g);
   color:white;
+  white-space:nowrap;
 }
+
 .badge{
   padding:5px 9px;
   border-radius:20px;
   font-size:12px;
   display:inline-block;
-}
-.yes{background:#dff4e8;color:#096a3e}
-.no{background:#f4e3e3;color:#9b2929}
-
-button{
-  border:0;
-  background:#0e5b3c;
-  color:white;
-  padding:12px 16px;
-  border-radius:12px;
-  cursor:pointer;
-}
-.actions{
-  display:flex;
-  gap:8px;
-  margin:12px 0;
-}
-.status{
-  text-align:center;
-  padding:20px;
-  color:#777;
-}
-@media(max-width:650px){
-  .cards{grid-template-columns:1fr 1fr}
-}
-</style>
-</head>
-
-<body>
-<div class="wrap">
-
-<div class="header">
-  <img src="./IMG_6646.jpeg" class="logo" alt="TSK">
-  <h1>إدارة عملاء TSK 96</h1>
-  <div class="sub">TSK 96 ACTIVE PASS — Admin Dashboard</div>
-</div>
-
-<div class="cards">
-  <div class="card">
-    <div class="num" id="customers">0</div>
-    <div class="label">العملاء</div>
-  </div>
-
-  <div class="card">
-    <div class="num" id="paid">0</div>
-    <div class="label">البطاقات المباعة</div>
-  </div>
-
-  <div class="card">
-    <div class="num" id="visits">0</div>
-    <div class="label">إجمالي الزيارات</div>
-  </div>
-</div>
-
-<div class="tools">
-  <input id="search" placeholder="ابحث باسم العميل أو رقم الجوال أو رقم البطاقة">
-</div>
-
-<div class="actions">
-  <button onclick="loadData()">تحديث البيانات</button>
-  <button onclick="exportCSV()">تصدير CSV</button>
-</div>
-
-<div class="tablebox">
-<table>
-<thead>
-<tr>
-  <th>رقم البطاقة</th>
-  <th>اسم العميل</th>
-  <th>الجوال</th>
-  <th>الدفع</th>
-  <th>الكوب</th>
-  <th>الزيارات</th>
-  <th>تاريخ التسجيل</th>
-</tr>
-</thead>
-
-<tbody id="rows"></tbody>
-</table>
-
-<div id="status" class="status">جاري التحقق...</div>
-</div>
-
-</div>
-
-<script>
-const cfg = window.TSK96_CONFIG;
-
-const sb = supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_ANON_KEY
-);
-
-let data = [];
-
-async function checkAdmin(){
-  const {data:{session}} = await sb.auth.getSession();
-
-  if(!session){
-    location.href="./login.html";
-    return false;
-  }
-
-  const role = session.user.user_metadata?.role;
-
-  if(role !== "admin"){
-    document.body.innerHTML =
-      '<div style="padding:50px;text-align:center;font-family:Arial">' +
-      '<h2>غير مصرح بالدخول</h2>' +
-      '<p>هذه الصفحة مخصصة للإدارة فقط.</p>' +
-      '</div>';
-    return false;
-  }
-
-  return true;
+  white-space:nowrap;
 }
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>إدارة العملاء | TSK 96</title>
+.yes{
+  background:#dff4e8;
+  color:#096a3e;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./config.js"></script>
+.no{
+  background:#f4e3e3;
+  color:#9b2929;
+}
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f7f5;
-  color:#172019;
+.neutral{
+  background:#edf0ee;
+  color:#59635d;
 }
-.wrap{
-  max-width:1100px;
-  margin:auto;
-  padding:18px;
-}
-.header{
-  text-align:center;
-  margin-bottom:20px;
-}
-.logo{
-  width:95px;
-  height:95px;
-  object-fit:contain;
-  border-radius:20px;
-}
-h1{
-  margin:10px 0 3px;
-  color:#0e5b3c;
-}
-.sub{color:#69736c}
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin:18px 0;
-}
-.card{
-  background:white;
-  padding:16px;
-  border-radius:18px;
-  text-align:center;
-  box-shadow:0 3px 15px #0000000d;
-}
-.num{
-  font-size:28px;
-  font-weight:bold;
-  color:#0e5b3c;
-}
-.label{
-  font-size:13px;
-  color:#777;
-  margin-top:5px;
-}
-.tools{
-  background:#fff;
-  padding:14px;
-  border-radius:18px;
-  margin-bottom:14px;
-}
-input{
-  width:100%;
-  padding:14px;
-  border:1px solid #ddd;
-  border-radius:12px;
+.stars{
+  color:var(--gold);
+  letter-spacing:1px;
+  white-space:nowrap;
   font-size:16px;
 }
-.tablebox{
-  background:#fff;
-  border-radius:18px;
-  overflow:auto;
-  box-shadow:0 3px 15px #0000000d;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:760px;
-}
-th,td{
-  padding:13px 10px;
-  border-bottom:1px solid #eee;
-  text-align:right;
-  font-size:14px;
-}
-th{
-  background:#0e5b3c;
-  color:white;
-}
-.badge{
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:12px;
-  display:inline-block;
-}
-.yes{background:#dff4e8;color:#096a3e}
-.no{background:#f4e3e3;color:#9b2929}
 
-button{
-  border:0;
-  background:#0e5b3c;
-  color:white;
-  padding:12px 16px;
-  border-radius:12px;
-  cursor:pointer;
+.comment{
+  min-width:180px;
+  max-width:280px;
+  line-height:1.6;
 }
-.actions{
-  display:flex;
-  gap:8px;
-  margin:12px 0;
-}
+
 .status{
   text-align:center;
   padding:20px;
   color:#777;
 }
-@media(max-width:650px){
-  .cards{grid-template-columns:1fr 1fr}
+
+.error{
+  color:#b42318;
+}
+
+.feedback-tools{
+  margin-top:14px;
+}
+
+@media(max-width:850px){
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:520px){
+  .wrap{
+    padding:12px;
+  }
+
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .num{
+    font-size:24px;
+  }
+
+  .actions button{
+    flex:1;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<div class="header">
-  <img src="./IMG_6646.jpeg" class="logo" alt="TSK">
-  <h1>إدارة عملاء TSK 96</h1>
-  <div class="sub">TSK 96 ACTIVE PASS — Admin Dashboard</div>
-</div>
+  <div class="header">
 
-<div class="cards">
-  <div class="card">
-    <div class="num" id="customers">0</div>
-    <div class="label">العملاء</div>
+    <img
+      src="./IMG_6646.jpeg"
+      class="logo"
+      alt="TSK">
+
+    <h1>
+      إدارة عملاء TSK 96
+    </h1>
+
+    <div class="sub">
+      TSK 96 ACTIVE PASS — Admin Dashboard
+    </div>
+
   </div>
 
-  <div class="card">
-    <div class="num" id="paid">0</div>
-    <div class="label">البطاقات المباعة</div>
+
+  <!-- =========================
+       ملخص العملاء
+  ========================== -->
+
+  <div class="section-title">
+    ملخص الحملة
   </div>
 
-  <div class="card">
-    <div class="num" id="visits">0</div>
-    <div class="label">إجمالي الزيارات</div>
+  <div class="cards">
+
+    <div class="card">
+      <div class="num" id="customers">0</div>
+      <div class="label">العملاء</div>
+    </div>
+
+    <div class="card">
+      <div class="num" id="paid">0</div>
+      <div class="label">البطاقات المباعة</div>
+    </div>
+
+    <div class="card">
+      <div class="num" id="visits">0</div>
+      <div class="label">إجمالي الزيارات</div>
+    </div>
+
+    <div class="card">
+      <div class="num" id="cups">0</div>
+      <div class="label">الأكواب المستلمة</div>
+    </div>
+
   </div>
+
+
+  <!-- =========================
+       ملخص التقييمات
+  ========================== -->
+
+  <div class="section-title">
+    ⭐ تقييمات العملاء
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div
+        class="num gold"
+        id="avgOverall">
+        0.0
+      </div>
+      <div class="label">
+        متوسط التقييم العام / 5
+      </div>
+    </div>
+
+    <div class="card">
+      <div
+        class="num"
+        id="feedbackCount">
+        0
+      </div>
+      <div class="label">
+        عدد التقييمات
+      </div>
+    </div>
+
+    <div class="card">
+      <div
+        class="num gold"
+        id="avgProduct">
+        0.0
+      </div>
+      <div class="label">
+        متوسط جودة المنتج / 5
+      </div>
+    </div>
+
+    <div class="card">
+      <div
+        class="num gold"
+        id="avgService">
+        0.0
+      </div>
+      <div class="label">
+        متوسط الخدمة / 5
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       العملاء
+  ========================== -->
+
+  <div class="section-title">
+    بيانات العملاء
+  </div>
+
+  <div class="tools">
+
+    <input
+      id="search"
+      placeholder="ابحث باسم العميل أو رقم الجوال أو رقم البطاقة">
+
+  </div>
+
+
+  <div class="actions">
+
+    <button onclick="loadData()">
+      تحديث البيانات
+    </button>
+
+    <button
+      class="secondary"
+      onclick="exportCSV()">
+      تصدير العملاء CSV
+    </button>
+
+  </div>
+
+
+  <div class="tablebox">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>رقم البطاقة</th>
+          <th>اسم العميل</th>
+          <th>الجوال</th>
+          <th>الدفع</th>
+          <th>الكوب</th>
+          <th>الزيارات</th>
+          <th>تاريخ التسجيل</th>
+        </tr>
+      </thead>
+
+      <tbody id="rows"></tbody>
+
+    </table>
+
+    <div
+      id="status"
+      class="status">
+      جاري التحقق...
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       جدول التقييمات
+  ========================== -->
+
+  <div class="section-title">
+    تفاصيل تقييمات الزيارات
+  </div>
+
+
+  <div class="tools feedback-tools">
+
+    <input
+      id="feedbackSearch"
+      placeholder="ابحث برقم البطاقة أو رقم الزيارة أو التعليق">
+
+  </div>
+
+
+  <div class="actions">
+
+    <button
+      class="secondary"
+      onclick="exportFeedbackCSV()">
+      تصدير التقييمات CSV
+    </button>
+
+  </div>
+
+
+  <div class="tablebox">
+
+    <table class="feedback-table">
+
+      <thead>
+
+        <tr>
+
+          <th>
+            رقم البطاقة
+          </th>
+
+          <th>
+            الزيارة
+          </th>
+
+          <th>
+            التقييم العام
+          </th>
+
+          <th>
+            جودة المنتج
+          </th>
+
+          <th>
+            الخدمة
+          </th>
+
+          <th>
+            التوصية
+          </th>
+
+          <th>
+            التعليق
+          </th>
+
+          <th>
+            التاريخ
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="feedbackRows"></tbody>
+
+    </table>
+
+
+    <div
+      id="feedbackStatus"
+      class="status">
+      جاري تحميل التقييمات...
+    </div>
+
+  </div>
+
 </div>
 
-<div class="tools">
-  <input id="search" placeholder="ابحث باسم العميل أو رقم الجوال أو رقم البطاقة">
-</div>
-
-<div class="actions">
-  <button onclick="loadData()">تحديث البيانات</button>
-  <button onclick="exportCSV()">تصدير CSV</button>
-</div>
-
-<div class="tablebox">
-<table>
-<thead>
-<tr>
-  <th>رقم البطاقة</th>
-  <th>اسم العميل</th>
-  <th>الجوال</th>
-  <th>الدفع</th>
-  <th>الكوب</th>
-  <th>الزيارات</th>
-  <th>تاريخ التسجيل</th>
-</tr>
-</thead>
-
-<tbody id="rows"></tbody>
-</table>
-
-<div id="status" class="status">جاري التحقق...</div>
-</div>
-
-</div>
 
 <script>
-const cfg = window.TSK96_CONFIG;
 
-const sb = supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_ANON_KEY
-);
+const cfg =
+  window.TSK96_CONFIG;
+
+
+const sb =
+  supabase.createClient(
+    cfg.SUPABASE_URL,
+    cfg.SUPABASE_ANON_KEY
+  );
+
 
 let data = [];
 
+let feedbackData = [];
+
+
+/* =========================
+   التحقق من الأدمن
+========================= */
+
 async function checkAdmin(){
-  const {data:{session}} = await sb.auth.getSession();
+
+  const {
+    data:{session}
+  } =
+  await sb.auth.getSession();
+
 
   if(!session){
-    location.href="./login.html";
+
+    location.href =
+      "./login.html";
+
     return false;
   }
 
-  const role = session.user.user_metadata?.role;
+
+  const role =
+    session.user
+      .user_metadata
+      ?.role;
+
 
   if(role !== "admin"){
+
     document.body.innerHTML =
       '<div style="padding:50px;text-align:center;font-family:Arial">' +
       '<h2>غير مصرح بالدخول</h2>' +
       '<p>هذه الصفحة مخصصة للإدارة فقط.</p>' +
       '</div>';
+
+
     return false;
   }
 
+
   return true;
 }
+
+
+/* =========================
+   تحميل البيانات
+========================= */
+
 async function loadData(){
 
-  const allowed = await checkAdmin();
-  if(!allowed) return;
+  const allowed =
+    await checkAdmin();
 
-  document.getElementById("status").style.display="block";
-  document.getElementById("status").textContent="جاري تحميل بيانات العملاء...";
 
-  const {data:passes,error:passError} = await sb
+  if(!allowed){
+    return;
+  }
+
+
+  document
+    .getElementById("status")
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById("status")
+    .textContent =
+    "جاري تحميل بيانات العملاء...";
+
+
+  document
+    .getElementById("feedbackStatus")
+    .style.display =
+    "block";
+
+
+  document
+    .getElementById("feedbackStatus")
+    .textContent =
+    "جاري تحميل التقييمات...";
+
+
+  /* البطاقات */
+
+  const {
+    data:passes,
+    error:passError
+  } =
+  await sb
     .from("tsk96_passes")
-    .select("id,paid,cup_received,cup_branch,visit_count,created_at");
+    .select(
+      "id,paid,cup_received,cup_branch,visit_count,created_at"
+    );
+
 
   if(passError){
-    document.getElementById("status").textContent =
-      "تعذر تحميل بيانات البطاقات: " + passError.message;
+
+    document
+      .getElementById("status")
+      .className =
+      "status error";
+
+
+    document
+      .getElementById("status")
+      .textContent =
+      "تعذر تحميل بيانات البطاقات: " +
+      passError.message;
+
+
     return;
   }
 
-  const {data:customers,error:customerError} = await sb
+
+  /* بيانات العملاء الخاصة */
+
+  const {
+    data:customers,
+    error:customerError
+  } =
+  await sb
     .from("tsk96_customer_private")
-    .select("pass_id,customer_name,customer_phone,marketing_consent,created_at");
+    .select(
+      "pass_id,customer_name,customer_phone,marketing_consent,created_at"
+    );
+
 
   if(customerError){
-    document.getElementById("status").textContent =
-      "تعذر تحميل بيانات العملاء: " + customerError.message;
+
+    document
+      .getElementById("status")
+      .className =
+      "status error";
+
+
+    document
+      .getElementById("status")
+      .textContent =
+      "تعذر تحميل بيانات العملاء: " +
+      customerError.message;
+
+
     return;
   }
+
 
   const passMap = {};
 
-  (passes || []).forEach(p=>{
-    passMap[p.id] = p;
-  });
 
-  data = (customers || []).map(c=>{
-    const p = passMap[c.pass_id] || {};
+  (passes || [])
+    .forEach(p => {
 
-    return {
-      id: c.pass_id,
-      customer_name: c.customer_name || "",
-      phone: c.customer_phone || "",
-      paid: p.paid || false,
-      cup_received: p.cup_received || false,
-      cup_branch: p.cup_branch || "",
-      visit_count: Number(p.visit_count) || 0,
-      created_at: p.created_at || c.created_at,
-      marketing_consent: c.marketing_consent || false
-    };
-  });
+      passMap[p.id] =
+        p;
 
-  document.getElementById("customers").textContent =
-    data.filter(x=>x.customer_name || x.phone).length;
+    });
 
-  document.getElementById("paid").textContent =
-    data.filter(x=>x.paid).length;
 
-  document.getElementById("visits").textContent =
-    data.reduce((n,x)=>n+(Number(x.visit_count)||0),0);
+  data =
+    (customers || [])
+    .map(c => {
 
-  render(data);
-}
-function render(list){
+      const p =
+        passMap[c.pass_id]
+        || {};
 
-  const tbody=document.getElementById("rows");
-  tbody.innerHTML="";
 
-  list.forEach(x=>{
+      return {
 
-    const tr=document.createElement("tr");
+        id:
+          c.pass_id,
 
-    tr.innerHTML=`
-      <td>${safe(x.id)}</td>
-      <td>${safe(x.customer_name)}</td>
-      <td>${safe(x.phone)}</td>
+        customer_name:
+          c.customer_name
+          || "",
 
-      <td>
-        <span class="badge ${x.paid?'yes':'no'}">
-          ${x.paid?'مدفوع':'غير مدفوع'}
-        </span>
-      </td>
+        phone:
+          c.customer_phone
+          || "",
 
-      <td>
-        <span class="badge ${x.cup_received?'yes':'no'}">
-          ${x.cup_received?'تم الاستلام':'لم يستلم'}
-        </span>
-      </td>
+        paid:
+          p.paid
+          || false,
 
-      <td>${Number(x.visit_count)||0} / 3</td>
+        cup_received:
+          p.cup_received
+          || false,
 
-      <td>
-        ${x.created_at
-          ? new Date(x.created_at).toLocaleDateString("ar-SA")
-          : "-"}
-      </td>
-    `;
+        cup_branch:
+          p.cup_branch
+          || "",
 
-    tbody.appendChild(tr);
-  });
+        visit_count:
+          Number(
+            p.visit_count
+          ) || 0,
 
-  document.getElementById("status").style.display =
-    list.length ? "none":"block";
+        created_at:
+          p.created_at
+          || c.created_at,
 
-  if(!list.length)
-    document.getElementById("status").textContent="لا توجد بيانات.";
-}
+        marketing_consent:
+          c.marketing_consent
+          || false
 
-function safe(v){
-  if(v===null || v===undefined || v==="") return "-";
+      };
 
-  return String(v)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;");
-}
+    });
 
-document.getElementById("search").addEventListener("input",function(){
 
-  const q=this.value.trim().toLowerCase();
+  document
+    .getElementById("customers")
+    .textContent =
+    data
+      .filter(
+        x =>
+          x.customer_name
+          ||
+          x.phone
+      )
+      .length;
 
-  const result=data.filter(x=>
-    String(x.id||"").toLowerCase().includes(q) ||
-    String(x.customer_name||"").toLowerCase().includes(q) ||
-    String(x.phone||"").toLowerCase().includes(q)
+
+  document
+    .getElementById("paid")
+    .textContent =
+    data
+      .filter(
+        x => x.paid
+      )
+      .length;
+
+
+  document
+    .getElementById("visits")
+    .textContent =
+    data.reduce(
+      (n,x) =>
+        n +
+        (
+          Number(
+            x.visit_count
+          )
+          || 0
+        ),
+      0
+    );
+
+
+  document
+    .getElementById("cups")
+    .textContent =
+    data
+      .filter(
+        x =>
+          x.cup_received
+      )
+      .length;
+
+
+  renderCustomers(
+    data
   );
 
-  render(result);
-});
+
+  await loadFeedback();
+
+}
+
+
+/* =========================
+   تحميل التقييمات
+========================= */
+
+async function loadFeedback(){
+
+  const {
+    data:feedback,
+    error
+  } =
+  await sb
+    .from("tsk96_feedback")
+    .select(
+      "id,pass_id,visit_no,overall_rating,product_rating,service_rating,experience_rating,recommend,comment,created_at"
+    )
+    .order(
+      "created_at",
+      {
+        ascending:false
+      }
+    );
+
+
+  if(error){
+
+    document
+      .getElementById("feedbackStatus")
+      .className =
+      "status error";
+
+
+    document
+      .getElementById("feedbackStatus")
+      .textContent =
+      "تعذر تحميل التقييمات: " +
+      error.message;
+
+
+    return;
+  }
+
+
+  feedbackData =
+    feedback
+    || [];
+
+
+  updateFeedbackSummary();
+
+
+  renderFeedback(
+    feedbackData
+  );
+
+}
+
+
+/* =========================
+   ملخص التقييمات
+========================= */
+
+function average(
+  list,
+  field
+){
+
+  const values =
+    list
+    .map(
+      x =>
+        Number(
+          x[field]
+        )
+    )
+    .filter(
+      x =>
+        Number.isFinite(x)
+        &&
+        x > 0
+    );
+
+
+  if(
+    !values.length
+  ){
+    return "0.0";
+  }
+
+
+  const total =
+    values.reduce(
+      (a,b) =>
+        a + b,
+      0
+    );
+
+
+  return (
+    total /
+    values.length
+  ).toFixed(1);
+}
+
+
+function updateFeedbackSummary(){
+
+  document
+    .getElementById("feedbackCount")
+    .textContent =
+    feedbackData.length;
+
+
+  document
+    .getElementById("avgOverall")
+    .textContent =
+    average(
+      feedbackData,
+      "overall_rating"
+    );
+
+
+  document
+    .getElementById("avgProduct")
+    .textContent =
+    average(
+      feedbackData,
+      "product_rating"
+    );
+
+
+  document
+    .getElementById("avgService")
+    .textContent =
+    average(
+      feedbackData,
+      "service_rating"
+    );
+
+}
+
+
+/* =========================
+   عرض العملاء
+========================= */
+
+function renderCustomers(list){
+
+  const tbody =
+    document
+      .getElementById("rows");
+
+
+  tbody.innerHTML =
+    "";
+
+
+  list.forEach(x => {
+
+    const tr =
+      document
+        .createElement("tr");
+
+
+    tr.innerHTML =
+      `
+      <td>
+        ${safe(x.id)}
+      </td>
+
+      <td>
+        ${safe(x.customer_name)}
+      </td>
+
+      <td>
+        ${safe(x.phone)}
+      </td>
+
+      <td>
+
+        <span
+          class="badge ${x.paid ? "yes" : "no"}">
+
+          ${x.paid ? "مدفوع" : "غير مدفوع"}
+
+        </span>
+
+      </td>
+
+      <td>
+
+        <span
+          class="badge ${x.cup_received ? "yes" : "no"}">
+
+          ${
+            x.cup_received
+            ? "تم الاستلام"
+            : "لم يستلم"
+          }
+
+        </span>
+
+      </td>
+
+      <td>
+        ${Number(x.visit_count) || 0} / 3
+      </td>
+
+      <td>
+
+        ${
+          x.created_at
+
+          ? new Date(
+              x.created_at
+            )
+            .toLocaleDateString(
+              "ar-SA"
+            )
+
+          : "-"
+        }
+
+      </td>
+      `;
+
+
+    tbody
+      .appendChild(
+        tr
+      );
+
+  });
+
+
+  const status =
+    document
+      .getElementById("status");
+
+
+  status.className =
+    "status";
+
+
+  status.style.display =
+    list.length
+      ? "none"
+      : "block";
+
+
+  if(!list.length){
+
+    status.textContent =
+      "لا توجد بيانات.";
+
+  }
+
+}
+
+
+/* =========================
+   عرض التقييمات
+========================= */
+
+function renderFeedback(list){
+
+  const tbody =
+    document
+      .getElementById(
+        "feedbackRows"
+      );
+
+
+  tbody.innerHTML =
+    "";
+
+
+  list.forEach(x => {
+
+    const tr =
+      document
+        .createElement("tr");
+
+
+    tr.innerHTML =
+      `
+
+      <td>
+        ${safe(x.pass_id)}
+      </td>
+
+
+      <td>
+        ${
+          x.visit_no
+          ? "الزيارة " +
+            Number(
+              x.visit_no
+            )
+          : "-"
+        }
+      </td>
+
+
+      <td>
+        ${starText(x.overall_rating)}
+      </td>
+
+
+      <td>
+        ${starText(x.product_rating)}
+      </td>
+
+
+      <td>
+        ${starText(x.service_rating)}
+      </td>
+
+
+      <td>
+
+        ${
+          x.recommend === true
+
+          ? '<span class="badge yes">نعم</span>'
+
+          : x.recommend === false
+
+          ? '<span class="badge no">لا</span>'
+
+          : '<span class="badge neutral">-</span>'
+        }
+
+      </td>
+
+
+      <td class="comment">
+        ${safe(x.comment)}
+      </td>
+
+
+      <td>
+
+        ${
+          x.created_at
+
+          ? new Date(
+              x.created_at
+            )
+            .toLocaleString(
+              "ar-SA"
+            )
+
+          : "-"
+        }
+
+      </td>
+
+      `;
+
+
+    tbody
+      .appendChild(
+        tr
+      );
+
+  });
+
+
+  const status =
+    document
+      .getElementById(
+        "feedbackStatus"
+      );
+
+
+  status.className =
+    "status";
+
+
+  status.style.display =
+    list.length
+      ? "none"
+      : "block";
+
+
+  if(!list.length){
+
+    status.textContent =
+      "لا توجد تقييمات حتى الآن.";
+
+  }
+
+}
+
+
+/* =========================
+   النجوم
+========================= */
+
+function starText(value){
+
+  const n =
+    Number(value);
+
+
+  if(
+    !Number.isFinite(n)
+    ||
+    n < 1
+  ){
+
+    return "-";
+  }
+
+
+  const count =
+    Math.max(
+      1,
+      Math.min(
+        5,
+        Math.round(n)
+      )
+    );
+
+
+  return (
+    '<span class="stars">' +
+    "★".repeat(count) +
+    "</span> " +
+    count +
+    "/5"
+  );
+
+}
+
+
+/* =========================
+   حماية النص
+========================= */
+
+function safe(v){
+
+  if(
+    v === null
+    ||
+    v === undefined
+    ||
+    v === ""
+  ){
+
+    return "-";
+  }
+
+
+  return String(v)
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+/* =========================
+   بحث العملاء
+========================= */
+
+document
+  .getElementById("search")
+  .addEventListener(
+    "input",
+    function(){
+
+      const q =
+        this.value
+          .trim()
+          .toLowerCase();
+
+
+      const result =
+        data.filter(
+          x =>
+
+            String(
+              x.id || ""
+            )
+            .toLowerCase()
+            .includes(q)
+
+            ||
+
+            String(
+              x.customer_name || ""
+            )
+            .toLowerCase()
+            .includes(q)
+
+            ||
+
+            String(
+              x.phone || ""
+            )
+            .toLowerCase()
+            .includes(q)
+
+        );
+
+
+      renderCustomers(
+        result
+      );
+
+    }
+  );
+
+
+/* =========================
+   بحث التقييمات
+========================= */
+
+document
+  .getElementById(
+    "feedbackSearch"
+  )
+  .addEventListener(
+    "input",
+    function(){
+
+      const q =
+        this.value
+          .trim()
+          .toLowerCase();
+
+
+      const result =
+        feedbackData
+        .filter(
+          x =>
+
+            String(
+              x.pass_id || ""
+            )
+            .toLowerCase()
+            .includes(q)
+
+            ||
+
+            String(
+              x.visit_no || ""
+            )
+            .includes(q)
+
+            ||
+
+            String(
+              x.comment || ""
+            )
+            .toLowerCase()
+            .includes(q)
+
+        );
+
+
+      renderFeedback(
+        result
+      );
+
+    }
+  );
+
+
+/* =========================
+   تصدير العملاء
+========================= */
 
 function exportCSV(){
 
   if(!data.length){
-    alert("لا توجد بيانات للتصدير");
+
+    alert(
+      "لا توجد بيانات للتصدير"
+    );
+
     return;
   }
 
-  const header=[
+
+  const header = [
     "Pass ID",
     "Customer Name",
     "Phone",
@@ -578,33 +1405,204 @@ function exportCSV(){
     "Created At"
   ];
 
-  const csv=[
+
+  const csv = [
+
     header,
-    ...data.map(x=>[
-      x.id,
-      x.customer_name,
-      x.phone,
-      x.paid,
-      x.cup_received,
-      x.visit_count,
-      x.created_at
-    ])
+
+    ...data.map(
+      x => [
+
+        x.id,
+
+        x.customer_name,
+
+        x.phone,
+
+        x.paid,
+
+        x.cup_received,
+
+        x.visit_count,
+
+        x.created_at
+
+      ]
+    )
+
   ]
-  .map(row=>row.map(v=>`"${String(v??"").replaceAll('"','""')}"`).join(","))
+
+  .map(
+    row =>
+      row
+      .map(
+        v =>
+          `"${String(v ?? "")
+          .replaceAll(
+            '"',
+            '""'
+          )}"`
+      )
+      .join(",")
+  )
+
   .join("\n");
 
-  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
-  const url=URL.createObjectURL(blob);
 
-  const a=document.createElement("a");
-  a.href=url;
-  a.download="TSK96_Customers.csv";
-  a.click();
+  downloadCSV(
+    csv,
+    "TSK96_Customers.csv"
+  );
 
-  URL.revokeObjectURL(url);
 }
 
+
+/* =========================
+   تصدير التقييمات
+========================= */
+
+function exportFeedbackCSV(){
+
+  if(
+    !feedbackData.length
+  ){
+
+    alert(
+      "لا توجد تقييمات للتصدير"
+    );
+
+    return;
+  }
+
+
+  const header = [
+
+    "Pass ID",
+
+    "Visit",
+
+    "Overall Rating",
+
+    "Product Rating",
+
+    "Service Rating",
+
+    "Recommend",
+
+    "Comment",
+
+    "Created At"
+
+  ];
+
+
+  const csv = [
+
+    header,
+
+    ...feedbackData
+      .map(
+        x => [
+
+          x.pass_id,
+
+          x.visit_no,
+
+          x.overall_rating,
+
+          x.product_rating,
+
+          x.service_rating,
+
+          x.recommend,
+
+          x.comment,
+
+          x.created_at
+
+        ]
+      )
+
+  ]
+
+  .map(
+    row =>
+      row
+      .map(
+        v =>
+          `"${String(v ?? "")
+          .replaceAll(
+            '"',
+            '""'
+          )}"`
+      )
+      .join(",")
+  )
+
+  .join("\n");
+
+
+  downloadCSV(
+    csv,
+    "TSK96_Feedback.csv"
+  );
+
+}
+
+
+function downloadCSV(
+  csv,
+  filename
+){
+
+  const blob =
+    new Blob(
+      [
+        "\uFEFF" +
+        csv
+      ],
+      {
+        type:
+          "text/csv;charset=utf-8"
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a =
+    document
+      .createElement("a");
+
+
+  a.href =
+    url;
+
+
+  a.download =
+    filename;
+
+
+  a.click();
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+}
+
+
+/* =========================
+   تشغيل
+========================= */
+
 loadData();
+
 </script>
 
 </body>
